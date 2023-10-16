@@ -4,11 +4,11 @@ function App() {
   const [message, setMessage] = useState('');
 
   // Fetching message from backend on mount
-  useEffect(() => {
-    fetch('https://mern-deploy-backend-ji5i.onrender.com')
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://mern-deploy-backend-ji5i.onrender.com')
+  //     .then((res) => res.json())
+  //     .then((data) => setMessage(data.message));
+  // }, []);
 
   return (
     <div className="App">
