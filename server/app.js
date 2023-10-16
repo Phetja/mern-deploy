@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const cors = require('cors');
+const { readdirSync } = require('fs');
 require('dotenv').config();
 
 // middleware
@@ -10,6 +11,12 @@ const corsOptions = {
 };
 app.use(express.json());
 app.use(cors(corsOptions));
+const PORT = process.env.PORT;
+
+//routes
+readdirSync('./routes').map((route) =>
+  app.use('/api/v1', require('./routes/' + route))
+);
 
 // connect MongoDB
 mongoose
