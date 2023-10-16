@@ -1,7 +1,6 @@
 import React from 'react';
 import { InnerLayout } from '../../styles/Layouts';
 import SelectDate from './SelectDate';
-import Chart from '../Chart/Chart';
 import { Col, Row, Space } from 'antd';
 import { useGlobalContext } from '../../context/GlobalContext';
 import ItemCategory from '../ItemCategory/ItemCategory';
@@ -22,9 +21,7 @@ function Analysis() {
               <Col xs={24} md={12}>
                 <SelectDate />
               </Col>
-              <Col xs={24} md={18}>
-                <Chart />
-              </Col>
+              <Col xs={24} md={18}></Col>
             </Row>
           </Space>
         </Col>
