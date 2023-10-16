@@ -11,10 +11,9 @@ import {
   ArcElement,
 } from 'chart.js';
 
-import { Doughnut, Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/GlobalContext';
-import { dateFormat } from '../../utils/dateFormat';
 
 ChartJs.register(
   CategoryScale,
