@@ -31,7 +31,6 @@ function Detail() {
         {/* <div className="safearea" /> */}
         <Container>
           <h1>All Transaction</h1>
-          {/* <Graph /> */}
           <Row>
             <Col xs={12} md={8}>
               <div className="card">

@@ -3,19 +3,19 @@ import styled from 'styled-components';
 
 import {
   bank,
+  beer,
   car,
-  circle,
+  clothing,
   coffee,
+  coin,
   food,
+  info,
   medical,
   mobile,
   money,
-  piggy,
+  personal,
   shopping,
   store,
-  takeaway,
-  tv,
-  yt,
 } from '../utils/icons';
 import { numFormat } from '../utils/numFormat';
 
@@ -33,39 +33,39 @@ function HistoryHomeItem({
         return money;
       case 'bank':
         return bank;
-      case 'youtube':
-        return yt;
       case 'other':
-        return piggy;
+        return coin;
       default:
-        return '';
+        return coin;
     }
   };
 
   const expenseCatIcon = () => {
     switch (category) {
-      case 'coffee':
-        return coffee;
       case 'food':
         return food;
-      case 'health':
-        return medical;
-      case 'subscriptions':
-        return tv;
-      case 'takeaways':
-        return takeaway;
-      case 'shopping':
-        return shopping;
+      case 'coffee':
+        return coffee;
       case 'travelling':
         return car;
-      case 'store':
-        return store;
+      case 'clothing':
+        return clothing;
       case 'mobile':
         return mobile;
+      case 'store':
+        return store;
+      case 'health':
+        return medical;
+      case 'shopping':
+        return shopping;
+      case 'personal':
+        return personal;
+      case 'supplies':
+        return beer;
       case 'other':
-        return circle;
+        return info;
       default:
-        return '';
+        return info;
     }
   };
 
@@ -87,9 +87,25 @@ function HistoryHomeItem({
       case 'coffee':
         return '111,78,55';
       case 'travelling':
+        return '89,135,255';
+      case 'clothing':
+        return '224,92,139';
+      case 'mobile':
+        return '144,77,229';
+      case 'store':
         return '216,37,0';
+      case 'health':
+        return '6,125,88';
+      case 'shopping':
+        return '216,37,0';
+      case 'personal':
+        return '255,158,59';
+      case 'supplies':
+        return '208,196,4';
+      case 'other':
+        return '61,61,61';
       default:
-        return '';
+        return '61,61,61';
     }
   };
 

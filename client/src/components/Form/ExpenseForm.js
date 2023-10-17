@@ -69,8 +69,28 @@ function ExpenseForm() {
               label: 'เดินทาง',
             },
             {
-              value: 'shopping',
-              label: 'ช็อปปิ้ง',
+              value: 'clothing',
+              label: 'เสื้อผ้า',
+            },
+            {
+              value: 'mobile',
+              label: 'ค่าน้ำ/ค่าไฟ/มือถือ',
+            },
+            {
+              value: 'store',
+              label: 'ร้านค้า/7-11',
+            },
+            {
+              value: 'health',
+              label: 'ค่ายา',
+            },
+            {
+              value: 'personal',
+              label: 'ส่วนตัว',
+            },
+            {
+              value: 'supplies',
+              label: 'ของไม่จำเป็น',
             },
             {
               value: 'other',

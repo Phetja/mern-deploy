@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/GlobalContext';
-import moment from 'moment';
 import styled from 'styled-components';
 import HistoryHomeItem from '../../History/HistoryHomeItem';
 import { Col, Row } from 'antd';
@@ -31,7 +30,7 @@ function Home() {
           <Col xs={24} md={12}>
             <Row>
               <Col xs={24} md={24}>
-                <h1>Expense</h1>
+                <h1>PHETMAJA</h1>
                 <div className="card">
                   <div className="card-balance">
                     <h2>คงเหลือ</h2>
@@ -111,6 +110,9 @@ const HomeStyled = styled.nav`
   @media screen and (max-width: 750px) {
     .item {
       margin-top: 1rem;
+    }
+    .card {
+      padding: 1rem;
     }
   }
 `;

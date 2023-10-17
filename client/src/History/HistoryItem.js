@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import { dateFormat } from '../utils/dateFormat';
 
 import {
+  bank,
   bitcoin,
   calender,
   car,
   card,
   circle,
   coffee,
+  coin,
   food,
   freelance,
   medical,
@@ -40,20 +42,12 @@ function HistoryItem({
     switch (category) {
       case 'salary':
         return money;
-      case 'freelancing':
-        return freelance;
-      case 'investments':
-        return stocks;
-      case 'stocks':
-        return users;
-      case 'bitcoin':
-        return bitcoin;
       case 'bank':
-        return card;
+        return bank;
       case 'youtube':
         return yt;
       case 'other':
-        return piggy;
+        return coin;
       default:
         return '';
     }

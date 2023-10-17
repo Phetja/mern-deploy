@@ -1,28 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import { dateFormat } from '../../utils/dateFormat';
-import { HeartFilled, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 
 import {
   baht,
-  bitcoin,
+  bank,
+  beer,
   car,
   card,
-  circle,
+  clothing,
   coffee,
+  coin,
   food,
-  freelance,
+  info,
   medical,
   mobile,
   money,
-  piggy,
+  personal,
   shopping,
-  stocks,
   store,
-  takeaway,
-  tv,
-  users,
-  yt,
 } from '../../utils/icons';
 import { Button } from 'antd';
 import { numFormat } from '../../utils/numFormat';
@@ -41,49 +38,41 @@ function IncomeItem({
     switch (category) {
       case 'salary':
         return money;
-      case 'freelancing':
-        return freelance;
-      case 'investments':
-        return stocks;
-      case 'stocks':
-        return users;
-      case 'bitcoin':
-        return bitcoin;
       case 'bank':
-        return card;
-      case 'youtube':
-        return yt;
+        return bank;
       case 'other':
-        return piggy;
+        return coin;
       default:
-        return '';
+        return coin;
     }
   };
 
   const expenseCatIcon = () => {
     switch (category) {
-      case 'coffee':
-        return coffee;
       case 'food':
         return food;
-      case 'health':
-        return medical;
-      case 'subscriptions':
-        return tv;
-      case 'takeaways':
-        return takeaway;
-      case 'shopping':
-        return shopping;
+      case 'coffee':
+        return coffee;
       case 'travelling':
         return car;
-      case 'store':
-        return store;
+      case 'clothing':
+        return clothing;
       case 'mobile':
         return mobile;
+      case 'store':
+        return store;
+      case 'health':
+        return medical;
+      case 'shopping':
+        return shopping;
+      case 'personal':
+        return personal;
+      case 'supplies':
+        return beer;
       case 'other':
-        return circle;
+        return info;
       default:
-        return '';
+        return info;
     }
   };
 
@@ -100,7 +89,6 @@ function IncomeItem({
       <div className="content">
         <div className="inner-content">
           <div>
-            {/* <h5>{title}</h5> */}
             <h5>{category}</h5>
             <p>{dateFormat(date)}</p>
           </div>

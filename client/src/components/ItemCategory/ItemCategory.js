@@ -50,9 +50,25 @@ function ItemCategory({ id, sum, total }) {
       case 'coffee':
         return '111,78,55';
       case 'travelling':
+        return '89,135,255';
+      case 'clothing':
+        return '224,92,139';
+      case 'mobile':
+        return '144,77,229';
+      case 'store':
         return '216,37,0';
+      case 'health':
+        return '6,125,88';
+      case 'shopping':
+        return '216,37,0';
+      case 'personal':
+        return '255,158,59';
+      case 'supplies':
+        return '208,196,4';
+      case 'other':
+        return '61,61,61';
       default:
-        return '';
+        return '61,61,61';
     }
   };
 

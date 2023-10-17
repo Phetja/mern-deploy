@@ -25,13 +25,13 @@ function Navigation({ active, setActive }) {
           </ul>
         </div>
       </div>
-      <Button
+      {/* <Button
         type="primary"
         shape="circle"
         icon={active === 5 ? check : plus2}
         className={active === 5 ? 'btn-active btn-income' : 'btn-income'}
         onClick={active === 5 ? () => setActive(4) : () => setActive(5)}
-      />
+      /> */}
     </NavStyled>
   );
 }
