@@ -4,6 +4,8 @@ import SelectDate from './SelectDate';
 import { Col, Row, Space } from 'antd';
 import { useGlobalContext } from '../../context/GlobalContext';
 import ItemCategory from '../ItemCategory/ItemCategory';
+import { numFormat } from '../../utils/numFormat';
+import { baht, coin } from '../../utils/icons';
 function Analysis() {
   const { expenseAnlaysis, totalExpenseAnalysis } = useGlobalContext();
   return (
@@ -27,7 +29,23 @@ function Analysis() {
         </Col>
         <Col xs={24} md={12}>
           <div className="item">
-            <div className="today">Expense</div>
+            <h3
+              className="today"
+              style={{
+                paddingBottom: '1rem',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div>Expense</div>
+              <div>
+                {coin}{' '}
+                <span style={{ color: 'Black', fontSize: '2rem' }}>
+                  {numFormat(totalExpenseAnalysis())}
+                </span>{' '}
+              </div>
+            </h3>
+
             <div className="incomes">
               {expenseAnlaysis.map((income) => {
                 const { _id, sum } = income;
