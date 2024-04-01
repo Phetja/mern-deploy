@@ -44,3 +44,4 @@ export const check = <i class="fa fa-check" aria-hidden="true"></i>;
 export const personal = <i class="fa-solid fa-user"></i>;
 export const info = <i class="fa-solid fa-info"></i>;
 export const beer = <i class="fa-solid fa-beer-mug-empty"></i>;
+export const chart_pie = <i class="fa-solid fa-chart-pie"></i>;

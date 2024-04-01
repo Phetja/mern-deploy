@@ -12,6 +12,7 @@ export const GlobalProvider = ({ children }) => {
   const [expenseAnlaysis, setExpenseAnlaysis] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const maxDate = moment(new Date(), 'DD-MM-YYYY').format('L');
 
   //calculate income
@@ -25,9 +26,15 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const getIncomes = async () => {
-    const response = await axios.get(`${BASE_URL}get-incomes`);
-    setIncomes(response.data);
-    console.log(response.data);
+    try {
+      setLoading(true);
+      const response = await axios.get(`${BASE_URL}get-incomes`);
+      setIncomes(response.data);
+      console.log(response.data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   const deleteIncome = async (id) => {
@@ -54,9 +61,15 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const getExpense = async () => {
-    const response = await axios.get(`${BASE_URL}get-expense`);
-    setExpenses(response.data);
-    console.log(response.data);
+    try {
+      setLoading(true);
+      const response = await axios.get(`${BASE_URL}get-expense`);
+      setExpenses(response.data);
+      console.log(response.data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   const deleteExpense = async (id) => {
@@ -201,6 +214,7 @@ export const GlobalProvider = ({ children }) => {
         expenseAnlaysis,
         getExpenseAnalysis,
         totalExpenseAnalysis,
+        loading,
       }}
     >
       {children}

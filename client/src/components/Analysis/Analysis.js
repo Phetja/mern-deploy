@@ -5,7 +5,7 @@ import { Col, Row, Space } from 'antd';
 import { useGlobalContext } from '../../context/GlobalContext';
 import ItemCategory from '../ItemCategory/ItemCategory';
 import { numFormat } from '../../utils/numFormat';
-import { baht, coin } from '../../utils/icons';
+import { coin } from '../../utils/icons';
 function Analysis() {
   const { expenseAnlaysis, totalExpenseAnalysis } = useGlobalContext();
   return (

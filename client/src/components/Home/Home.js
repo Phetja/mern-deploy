@@ -5,8 +5,11 @@ import styled from 'styled-components';
 import HistoryHomeItem from '../../History/HistoryHomeItem';
 import { Col, Row } from 'antd';
 import { numFormat } from '../../utils/numFormat';
+import Loading from '../Loading/Loading';
+
 function Home() {
   const {
+    loading,
     getIncomes,
     getExpense,
     getIncomesToday,
@@ -25,61 +28,126 @@ function Home() {
   }, []);
   return (
     <InnerLayout>
-      <HomeStyled>
-        <Row gutter={[8]}>
-          <Col xs={24} md={12}>
-            <Row>
-              <Col xs={24} md={24}>
-                <h1>PHETMAJA</h1>
-                <div className="card">
-                  <div className="card-balance">
-                    <h2>คงเหลือ</h2>
-                    <h3>
-                      {' '}
-                      {numFormat(totalBalance())} {'บาท'}
-                    </h3>
+      {loading ? (
+        <Loading />
+      ) : (
+        <HomeStyled>
+          <Row gutter={[8]}>
+            <Col xs={24} md={12}>
+              <Row>
+                <Col xs={24} md={24}>
+                  <h1>My Wallet</h1>
+                  <div className="card">
+                    <div className="card-balance">
+                      <h2>Total Balance</h2>
+                      <h3>
+                        {' '}
+                        {numFormat(totalBalance())} {'บาท'}
+                      </h3>
+                    </div>
                   </div>
-                  <div className="card-balance line">
-                    <h2>ใช้จ่ายวันนี้</h2>
-                    <h3>
-                      {' '}
-                      {numFormat(totalExpenseToday())} {'บาท'}
-                    </h3>
+                </Col>
+                <Col xs={24} md={24}>
+                  <div className="card">
+                    <div className="card-balance">
+                      <h2>Total Today</h2>
+                      <h3>
+                        {' '}
+                        {numFormat(totalExpenseToday())} {'บาท'}
+                      </h3>
+                    </div>
                   </div>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={24} md={12}>
-            <Row>
-              <Col xs={24} md={24}>
-                <div className="item">
-                  <div className="today">Today</div>
-                  <div className="incomes">
-                    {history.map((income) => {
-                      const { _id, title, amount, date, category, type } =
-                        income;
-                      return (
-                        <HistoryHomeItem
-                          key={_id}
-                          id={_id}
-                          title={title}
-                          amount={amount}
-                          date={date}
-                          type={type}
-                          category={category}
-                          indicatorColor="var(--color-green)"
-                        />
-                      );
-                    })}
+                </Col>
+              </Row>
+            </Col>
+
+            <Col xs={24} md={12}>
+              <Row>
+                <Col xs={24} md={24}>
+                  <div className="item">
+                    <div className="today">Today</div>
+                    <div className="incomes">
+                      {history.map((income) => {
+                        const { _id, title, amount, date, category, type } =
+                          income;
+                        return (
+                          <HistoryHomeItem
+                            key={_id}
+                            id={_id}
+                            title={title}
+                            amount={amount}
+                            date={date}
+                            type={type}
+                            category={category}
+                            indicatorColor="var(--color-green)"
+                          />
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </HomeStyled>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </HomeStyled>
+      )}
     </InnerLayout>
+    // <InnerLayout>
+    //   <HomeStyled>
+    //     <Row gutter={[8]}>
+    //       <Col xs={24} md={12}>
+    //         <Row>
+    //           <Col xs={24} md={24}>
+    //             <h1>PHETMAJA</h1>
+    //             <div className="card">
+    //               <div className="card-balance">
+    //                 <h2>คงเหลือ</h2>
+    //                 <h3>
+    //                   {' '}
+    //                   {numFormat(totalBalance())} {'บาท'}
+    //                 </h3>
+    //               </div>
+    //               <div className="card-balance line">
+    //                 <h2>ใช้จ่ายวันนี้</h2>
+    //                 <h3>
+    //                   {' '}
+    //                   {numFormat(totalExpenseToday())} {'บาท'}
+    //                 </h3>
+    //               </div>
+    //             </div>
+    //           </Col>
+    //         </Row>
+    //       </Col>
+    //       <Col xs={24} md={12}>
+    //         <Row>
+    //           <Col xs={24} md={24}>
+    //             <div className="item">
+    //               <div className="today">Today</div>
+    //               <div className="incomes">
+    //                 {history.map((income) => {
+    //                   const { _id, title, amount, date, category, type } =
+    //                     income;
+    //                   return (
+    //                     <HistoryHomeItem
+    //                       key={_id}
+    //                       id={_id}
+    //                       title={title}
+    //                       amount={amount}
+    //                       date={date}
+    //                       type={type}
+    //                       category={category}
+    //                       indicatorColor="var(--color-green)"
+    //                     />
+    //                   );
+    //                 })}
+    //               </div>
+    //             </div>
+    //           </Col>
+    //         </Row>
+    //       </Col>
+    //     </Row>
+    //   </HomeStyled>
+    // </InnerLayout>
   );
 }
 const HomeStyled = styled.nav`
@@ -88,6 +156,7 @@ const HomeStyled = styled.nav`
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    margin-bottom: 1rem;
     .card-balance {
       width: 100%;
       padding-left: 1rem;
@@ -113,6 +182,15 @@ const HomeStyled = styled.nav`
     }
     .card {
       padding: 1rem;
+      .card-balance {
+        padding-left: 0rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        h2 {
+          font-size: 1rem;
+        }
+      }
     }
   }
 `;

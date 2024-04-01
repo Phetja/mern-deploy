@@ -1,4 +1,12 @@
-import { dashboard, expenses, graph, home, transactions, trend } from './icons';
+import {
+  chart_pie,
+  dashboard,
+  expenses,
+  graph,
+  home,
+  transactions,
+  trend,
+} from './icons';
 
 export const menuItems = [
   {
@@ -10,7 +18,7 @@ export const menuItems = [
   {
     id: 2,
     title: 'Detail',
-    icon: graph,
+    icon: chart_pie,
     link: '/dashboard',
   },
   {
