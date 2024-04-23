@@ -6,6 +6,7 @@ import HistoryHomeItem from '../../History/HistoryHomeItem';
 import { Col, Row } from 'antd';
 import { numFormat } from '../../utils/numFormat';
 import Loading from '../Loading/Loading';
+import Toggle from '../Toggle/Toggle';
 
 function Home() {
   const {

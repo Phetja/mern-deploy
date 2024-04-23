@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import {
   baht,
-  car,
+  bus,
   circle,
   coffee,
   food,
@@ -32,7 +32,7 @@ function ItemCategory({ id, sum, total }) {
       case 'shopping':
         return shopping;
       case 'travelling':
-        return car;
+        return bus;
       case 'store':
         return store;
       case 'mobile':

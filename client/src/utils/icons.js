@@ -45,3 +45,7 @@ export const personal = <i class="fa-solid fa-user"></i>;
 export const info = <i class="fa-solid fa-info"></i>;
 export const beer = <i class="fa-solid fa-beer-mug-empty"></i>;
 export const chart_pie = <i class="fa-solid fa-chart-pie"></i>;
+export const bus = <i class="fa-solid fa-bus-simple"></i>;
+export const right_left = <i class="fa-solid fa-right-left"></i>;
+export const circle_plus = <i class="fa-solid fa-circle-plus"></i>;
+export const border_all = <i class="fa-solid fa-border-all"></i>;

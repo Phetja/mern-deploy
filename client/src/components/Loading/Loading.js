@@ -1,20 +1,20 @@
 import React from 'react';
-import { DNA, Oval } from 'react-loader-spinner';
+import { DNA, Oval, Blocks } from 'react-loader-spinner';
 import styled from 'styled-components';
 function Loading() {
   return (
     <LoadingStyled>
       {' '}
       <div className="Loading-container">
-        {/* <DNA
+        <DNA
           visible={true}
           height="100"
           width="100"
           ariaLabel="dna-loading"
           wrapperStyle={{}}
           wrapperClass="dna-wrapper"
-        /> */}
-        <Oval
+        />
+        {/* <Oval
           height={80}
           width={80}
           color="#126fec"
@@ -25,7 +25,16 @@ function Loading() {
           secondaryColor="#126fec"
           strokeWidth={2}
           strokeWidthSecondary={2}
-        />
+        /> */}
+        {/* <Blocks
+          height="80"
+          width="80"
+          color="#126fec"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+          visible={true}
+        /> */}
       </div>
     </LoadingStyled>
   );

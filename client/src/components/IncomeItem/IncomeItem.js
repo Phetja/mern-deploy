@@ -7,6 +7,7 @@ import {
   baht,
   bank,
   beer,
+  bus,
   car,
   card,
   clothing,
@@ -54,7 +55,7 @@ function IncomeItem({
       case 'coffee':
         return coffee;
       case 'travelling':
-        return car;
+        return bus;
       case 'clothing':
         return clothing;
       case 'mobile':

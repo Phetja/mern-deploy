@@ -1,0 +1,32 @@
+.button-container {
+  width: 100%;
+  padding: 1rem 0.5rem 0 1rem;
+}
+
+.button-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-style: solid;
+  border-color: #5c80fe;
+  border-radius: 1rem;
+  background: #ffffff;
+  padding: 2px;
+}
+
+.toggle-btn {
+  width: 50%;
+  height: 30px;
+  border: none;
+  outline: none;
+  position: relative;
+  text-align: center;
+  background: #ffffff;
+  color: #456efe;
+  border-radius: 1rem;
+}
+
+.toggled {
+  background: #456efe;
+  color: #ffffff;
+}

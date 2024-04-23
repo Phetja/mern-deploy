@@ -78,9 +78,9 @@ const NavStyled = styled.nav`
     }
   }
   .nav .active {
-    color: #126fec !important;
+    color: #456efe !important;
     i {
-      color: #126fec !important;
+      color: #456efe !important;
     }
     &::before {
       content: '';
@@ -89,7 +89,7 @@ const NavStyled = styled.nav`
       top: 0;
       width: 4px;
       height: 100%;
-      background: #126fec;
+      background: #456efe;
       border-radius: 0 10px 10px 0;
     }
   }
@@ -148,9 +148,9 @@ const NavStyled = styled.nav`
     }
 
     .active {
-      color: #126fec !important;
+      color: #456efe !important;
       i {
-        color: #126fec !important;
+        color: #456efe !important;
       }
       &::before {
         display: none;

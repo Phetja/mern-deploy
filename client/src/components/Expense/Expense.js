@@ -77,7 +77,7 @@ const ExpenseStyled = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #126fec;
+    background: #456efe;
     box-shadow: 0px 2px 5px grey;
     border-radius: 10px;
     padding: 2rem;

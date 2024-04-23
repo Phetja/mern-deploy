@@ -8,6 +8,8 @@ import { useGlobalContext } from './context/GlobalContext';
 import Home from './components/Home/Home';
 import AddIncome from './components/Income/AddIncome';
 import Analysis from './components/Analysis/Analysis';
+import Transfer from './components/Transfer/Transfer';
+import Categoty from './components/Category/Categoty';
 function App() {
   const [active, setActive] = useState(1);
   const global = useGlobalContext();
@@ -20,11 +22,11 @@ function App() {
       case 2:
         return <Analysis />;
       case 3:
-        return <Income />;
+        return <Transfer />;
       case 4:
-        return <Expenses />;
+        return <Categoty />;
       case 5:
-        return <AddIncome />;
+        return <Transfer />;
       default:
         return <Home />;
     }
