@@ -103,7 +103,7 @@ const NavStyled = styled.nav`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 80px;
+    height: 56px;
     width: 100%;
     z-index: 3;
     padding: 0;
@@ -134,7 +134,7 @@ const NavStyled = styled.nav`
         justify-content: center;
         i {
           color: rgba(34, 34, 96, 0.6);
-          font-size: 2rem;
+          font-size: 24px;
           transition: all 0.4s ease-in-out;
         }
       }
@@ -156,9 +156,15 @@ const NavStyled = styled.nav`
         display: none;
       }
     }
+    li {
+      display: flex;
+      flex-direction: column;
+      span {
+        font-size: 12px;
+      }
+    }
 
     ul li span {
-      display: none;
     }
     .btn-income {
       display: block;

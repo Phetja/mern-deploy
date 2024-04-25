@@ -18,7 +18,7 @@ function Income() {
   return (
     <IncomeStyled>
       <InnerLayout>
-        <h1>Incomes</h1>
+        {/* <h1>Incomes</h1> */}
         <Row>
           <Col md={12}>
             {' '}
@@ -89,8 +89,12 @@ const IncomeStyled = styled.div`
   }
   @media screen and (max-width: 750px) {
     .total-income {
+      font-size: 1.5rem;
+      flex-direction: column;
+      padding: 1rem;
+      margin-top: 0;
       span {
-        font-size: 1.5srem;
+        font-size: 2rem;
         font-weight: 600;
         color: #ffffff;
       }

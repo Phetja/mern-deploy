@@ -124,7 +124,7 @@ function ExpenseForm() {
         />
 
         <Button type="primary" htmlType="submit" size="large">
-          Add Income
+          Add Expense
         </Button>
       </Space>
     </form>

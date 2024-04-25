@@ -16,7 +16,7 @@
 
 .toggle-btn {
   width: 50%;
-  height: 30px;
+  height: 2.5rem;
   border: none;
   outline: none;
   position: relative;
@@ -24,6 +24,7 @@
   background: #ffffff;
   color: #456efe;
   border-radius: 1rem;
+  transition: 0.3s ease-in;
 }
 
 .toggled {
