@@ -4,7 +4,7 @@ import { useGlobalContext } from '../../context/GlobalContext';
 import dayjs from 'dayjs';
 
 function IncomeForm() {
-  const { addIncome } = useGlobalContext();
+  const { addIncome, insertStatus } = useGlobalContext();
   const [inputState, setInputState] = useState({
     category: '',
     amount: '',
@@ -101,9 +101,15 @@ function IncomeForm() {
           onChange={handleDatePicker}
         />
 
-        <Button type="primary" htmlType="submit" size="large">
-          Add Income
-        </Button>
+        {insertStatus ? (
+          <Button type="primary" htmlType="submit" size="large">
+            Add Income
+          </Button>
+        ) : (
+          <Button type="primary" size="large" loading>
+            Loading
+          </Button>
+        )}
       </Space>
     </form>
   );

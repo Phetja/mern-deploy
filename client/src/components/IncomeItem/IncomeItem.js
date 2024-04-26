@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { dateFormat } from '../../utils/dateFormat';
 import { DeleteOutlined } from '@ant-design/icons';
+import { useGlobalContext } from '../../context/GlobalContext';
 
 import {
   baht,
@@ -76,7 +77,7 @@ function IncomeItem({
         return info;
     }
   };
-
+  const { deleteStatus } = useGlobalContext();
   console.log('type', type);
   const handleClick = (e) => {
     e.preventDefault();

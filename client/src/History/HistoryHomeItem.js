@@ -83,27 +83,27 @@ function HistoryHomeItem({
   const expenseIconColor = () => {
     switch (category) {
       case 'food':
-        return '203,146,4';
+        return '165,35,110';
       case 'coffee':
-        return '111,78,55';
+        return '75,40,30';
       case 'travelling':
-        return '89,135,255';
+        return '250,190,15';
       case 'clothing':
         return '224,92,139';
       case 'mobile':
-        return '144,77,229';
+        return '240,105,55';
       case 'store':
-        return '216,37,0';
+        return '235,30,75';
       case 'health':
-        return '6,125,88';
+        return '45,150,155';
       case 'shopping':
         return '216,37,0';
       case 'personal':
-        return '255,158,59';
+        return '110,180,245';
       case 'supplies':
-        return '208,196,4';
+        return '5,215,160';
       case 'other':
-        return '61,61,61';
+        return '10,55,85';
       default:
         return '61,61,61';
     }

@@ -5,12 +5,15 @@ import styled from 'styled-components';
 import HistoryHomeItem from '../../History/HistoryHomeItem';
 import { Col, Row } from 'antd';
 import { numFormat } from '../../utils/numFormat';
+import logo from '../../img/asa2.png';
 import Loading from '../Loading/Loading';
 import Toggle from '../Toggle/Toggle';
+import { DNA, Oval, Blocks, Hearts } from 'react-loader-spinner';
 
 function Home() {
   const {
     loading,
+    totalLoad,
     getIncomes,
     getExpense,
     getIncomesToday,
@@ -37,14 +40,23 @@ function Home() {
             <Col xs={24} md={12}>
               <Row>
                 <Col xs={24} md={24}>
-                  <h1>My Wallet</h1>
+                  <div className="title">
+                    {' '}
+                    <h1>My Wallet</h1>
+                    <img src={logo} className="asa" />
+                  </div>
+
                   <div className="card">
                     <div className="card-balance">
                       <h2>Total Balance</h2>
-                      <h3>
-                        {' '}
-                        {numFormat(totalBalance())} {'บาท'}
-                      </h3>
+
+                      {totalLoad ? (
+                        <div>Test</div>
+                      ) : (
+                        <h3>
+                          {numFormat(totalBalance())} {'บาท'}
+                        </h3>
+                      )}
                     </div>
                   </div>
                 </Col>
@@ -152,6 +164,15 @@ function Home() {
   );
 }
 const HomeStyled = styled.nav`
+  .title {
+    display: flex;
+    justify-content: space-between;
+  }
+  .asa {
+    display: none;
+    widht: 2rem;
+    height: 2rem;
+  }
   .card {
     padding: 2rem;
     display: flex;
@@ -178,6 +199,13 @@ const HomeStyled = styled.nav`
   }
 
   @media screen and (max-width: 750px) {
+    .title {
+      justify-content: space-between;
+    }
+    .asa {
+      display: block;
+    }
+
     .item {
       margin-top: 1rem;
     }

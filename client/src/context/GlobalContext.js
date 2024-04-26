@@ -13,16 +13,25 @@ export const GlobalProvider = ({ children }) => {
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [totalLoad, setTotalLoad] = useState(false);
+  const [insertStatus, setInsertStatus] = useState(true);
+  const [deleteStatus, setDeleteStatus] = useState(true);
   const maxDate = moment(new Date(), 'DD-MM-YYYY').format('L');
 
   //calculate income
   const addIncome = async (income) => {
-    const response = await axios
-      .post(`${BASE_URL}add-income`, income)
-      .catch((err) => {
-        setError(err.response.data.message);
-      });
-    getIncomes();
+    try {
+      setInsertStatus(false);
+      const response = await axios
+        .post(`${BASE_URL}add-income`, income)
+        .catch((err) => {
+          setError(err.response.data.message);
+        });
+      getIncomes();
+    } catch (error) {
+    } finally {
+      setInsertStatus(true);
+    }
   };
 
   const getIncomes = async () => {
@@ -38,8 +47,14 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const deleteIncome = async (id) => {
-    const res = await axios.delete(`${BASE_URL}delete-income/${id}`);
-    getIncomes();
+    try {
+      setDeleteStatus(false);
+      const res = await axios.delete(`${BASE_URL}delete-income/${id}`);
+      getIncomes();
+    } catch (error) {
+    } finally {
+      setDeleteStatus(true);
+    }
   };
 
   const totalIncome = () => {
@@ -52,12 +67,18 @@ export const GlobalProvider = ({ children }) => {
 
   //calculate expense
   const addExpense = async (income) => {
-    const response = await axios
-      .post(`${BASE_URL}add-expense`, income)
-      .catch((err) => {
-        setError(err.response.data.message);
-      });
-    getExpense();
+    try {
+      setInsertStatus(false);
+      const response = await axios
+        .post(`${BASE_URL}add-expense`, income)
+        .catch((err) => {
+          setError(err.response.data.message);
+        });
+      getExpense();
+    } catch (error) {
+    } finally {
+      setInsertStatus(true);
+    }
   };
 
   const getExpense = async () => {
@@ -87,7 +108,15 @@ export const GlobalProvider = ({ children }) => {
 
   //total
   const totalBalance = () => {
-    return totalIncome() - totalExpense();
+    let total;
+    try {
+      setTotalLoad(true);
+      total = totalIncome() - totalExpense();
+    } catch (error) {
+    } finally {
+      setTotalLoad(false);
+      return total;
+    }
   };
   //total
   const totalBalanceToday = () => {
@@ -170,9 +199,17 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const getExpenseAnalysis = async (year) => {
-    const response = await axios.get(`${BASE_URL}get-expenseAnalysis/${year}`);
-    setExpenseAnlaysis(response.data);
-    console.log(response.data);
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${BASE_URL}get-expenseAnalysis/${year}`
+      );
+      setExpenseAnlaysis(response.data);
+      console.log(response.data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
   const totalExpenseAnalysis = () => {
     let totalExpenseAnalysis = 0;
@@ -215,6 +252,9 @@ export const GlobalProvider = ({ children }) => {
         getExpenseAnalysis,
         totalExpenseAnalysis,
         loading,
+        insertStatus,
+        deleteStatus,
+        totalLoad,
       }}
     >
       {children}

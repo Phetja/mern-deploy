@@ -6,8 +6,10 @@ import { useGlobalContext } from '../../context/GlobalContext';
 import ItemCategory from '../ItemCategory/ItemCategory';
 import { numFormat } from '../../utils/numFormat';
 import { coin } from '../../utils/icons';
+import Loading from '../Loading/Loading';
+import Loading2 from '../Loading/Loading2';
 function Analysis() {
-  const { expenseAnlaysis, totalExpenseAnalysis } = useGlobalContext();
+  const { expenseAnlaysis, totalExpenseAnalysis, loading } = useGlobalContext();
   return (
     <InnerLayout>
       <Row gutter={[16, 16]}>
@@ -45,20 +47,23 @@ function Analysis() {
                 </span>{' '}
               </div>
             </h3>
-
-            <div className="incomes">
-              {expenseAnlaysis.map((income) => {
-                const { _id, sum } = income;
-                return (
-                  <ItemCategory
-                    key={_id}
-                    id={_id}
-                    sum={sum}
-                    total={totalExpenseAnalysis()}
-                  />
-                );
-              })}
-            </div>
+            {loading ? (
+              <Loading2 />
+            ) : (
+              <div className="incomes">
+                {expenseAnlaysis.map((income) => {
+                  const { _id, sum } = income;
+                  return (
+                    <ItemCategory
+                      key={_id}
+                      id={_id}
+                      sum={sum}
+                      total={totalExpenseAnalysis()}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
         </Col>
       </Row>
