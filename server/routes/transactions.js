@@ -12,6 +12,7 @@ const {
   deleteIncome,
   getIncomesCategory,
 } = require('../controllers/income');
+const { addGoal } = require('../controllers/goal');
 
 const router = require('express').Router();
 
@@ -27,6 +28,9 @@ router
   .get('/get-expense', getExpense)
   .get('/get-expenseAnalysis/:year', getExpenseAnalysis)
   .get('/get-expenseToday/:date', getExpenseToday)
-  .delete('/delete-expense/:id', deleteExpense);
+  .delete('/delete-expense/:id', deleteExpense)
+
+  // goal
+  .post('/add-goal', addGoal);
 
 module.exports = router;

@@ -57,6 +57,26 @@ exports.deleteExpense = async (req, res) => {
     });
 };
 
+exports.getCategory = async (req, res) => {
+  const incomes = await ExpenseSchema.aggregate([
+    {
+      $project: {
+        category: 1,
+        amount: 1,
+      },
+    },
+    {
+      $group: {
+        _id: '$category',
+        count: { $count: {} },
+        sum: { $sum: '$amount' },
+      },
+    },
+    { $sort: { sum: -1 } },
+  ]);
+  res.status(200).json(incomes);
+};
+
 exports.getExpenseAnalysis = async (req, res) => {
   const { year } = req.params;
 

@@ -127,11 +127,11 @@ function ExpenseForm() {
           Add Expense
         </Button> */}
         {insertStatus ? (
-          <Button type="primary" htmlType="submit" size="large">
+          <Button type="primary" htmlType="submit" size="large" block>
             Add Expense
           </Button>
         ) : (
-          <Button type="primary" size="large" loading>
+          <Button type="primary" size="large" loading block>
             Loading
           </Button>
         )}

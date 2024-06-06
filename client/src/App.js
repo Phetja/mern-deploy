@@ -10,6 +10,7 @@ import AddIncome from './components/Income/AddIncome';
 import Analysis from './components/Analysis/Analysis';
 import Transfer from './components/Transfer/Transfer';
 import Categoty from './components/Category/Categoty';
+import Goal from './components/Goal/Goal';
 function App() {
   const [active, setActive] = useState(1);
   const global = useGlobalContext();
@@ -24,7 +25,7 @@ function App() {
       case 3:
         return <Transfer />;
       case 4:
-        return <Categoty />;
+        return <Goal />;
       case 5:
         return <Transfer />;
       default:

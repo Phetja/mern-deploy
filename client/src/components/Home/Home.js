@@ -7,8 +7,6 @@ import { Col, Row } from 'antd';
 import { numFormat } from '../../utils/numFormat';
 import logo from '../../img/asa2.png';
 import Loading from '../Loading/Loading';
-import Toggle from '../Toggle/Toggle';
-import { DNA, Oval, Blocks, Hearts } from 'react-loader-spinner';
 
 function Home() {
   const {

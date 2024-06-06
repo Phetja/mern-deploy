@@ -6,8 +6,8 @@ import { useGlobalContext } from '../../context/GlobalContext';
 import ItemCategory from '../ItemCategory/ItemCategory';
 import { numFormat } from '../../utils/numFormat';
 import { coin } from '../../utils/icons';
-import Loading from '../Loading/Loading';
 import Loading2 from '../Loading/Loading2';
+
 function Analysis() {
   const { expenseAnlaysis, totalExpenseAnalysis, loading } = useGlobalContext();
   return (

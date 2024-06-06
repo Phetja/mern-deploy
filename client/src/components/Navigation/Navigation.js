@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { menuItems } from '../../utils/menuItems';
-import { Button } from 'antd';
-import { plus2, check } from '../../utils/icons';
 
 function Navigation({ active, setActive }) {
   return (
@@ -25,13 +23,6 @@ function Navigation({ active, setActive }) {
           </ul>
         </div>
       </div>
-      {/* <Button
-        type="primary"
-        shape="circle"
-        icon={active === 5 ? check : plus2}
-        className={active === 5 ? 'btn-active btn-income' : 'btn-income'}
-        onClick={active === 5 ? () => setActive(4) : () => setActive(5)}
-      /> */}
     </NavStyled>
   );
 }
