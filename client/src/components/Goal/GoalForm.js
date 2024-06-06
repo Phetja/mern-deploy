@@ -1,5 +1,5 @@
 import { Button, Input } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGlobalContext } from '../../context/GlobalContext';
 
 function GoalForm() {
@@ -23,6 +23,10 @@ function GoalForm() {
       monthly: '',
     });
   };
+  useEffect(() => {
+    setInputState({ ...inputState });
+  }, []);
+
   return (
     <form onSubmit={handleSubmit}>
       <Input

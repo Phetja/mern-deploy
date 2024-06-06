@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const GoalSchema = new mongoose.Schema({
-  category: {
+const GoalSchema = new mongoose.Schema(
+  {
     plan: {
       type: String,
       required: true,
@@ -20,6 +20,7 @@ const GoalSchema = new mongoose.Schema({
       trim: true,
     },
   },
-});
+  { timestamps: true }
+);
 
 module.exports = mongoose.model('Goal', GoalSchema);

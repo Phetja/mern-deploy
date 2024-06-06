@@ -10,12 +10,12 @@ exports.addGoal = async (req, res) => {
   });
 
   try {
-    if (!plan || !amount || !monthly) {
-      return res.status(400).json({ message: 'All fields are required!' });
-    }
-    if (amount <= 0 || !amount === 'number') {
-      return res.status(400).json({ message: 'Amount must be a positive' });
-    }
+    // if (!plan || !amount || !monthly) {
+    //   return res.status(400).json({ message: 'All fields are required!' });
+    // }
+    // if (amount <= 0 || !amount === 'number') {
+    //   return res.status(400).json({ message: 'Amount must be a positive' });
+    // }
     await goal.save();
     res.status(200).json({ message: 'Goal Added' });
   } catch (error) {

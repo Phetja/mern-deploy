@@ -35,10 +35,18 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  const addGoal = async (goal) => {
+  const addGoal = async (income) => {
     try {
-      const response = await axios.post(`${BASE_URL}add-goal`, goal);
-    } catch (error) {}
+      // setInsertStatus(false);
+      const response = await axios
+        .post(`${BASE_URL}add-goal`, income)
+        .catch((err) => {
+          setError(err.response.data.message);
+        });
+    } catch (error) {
+    } finally {
+      // setInsertStatus(true);
+    }
   };
 
   const getIncomes = async () => {
