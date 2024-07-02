@@ -12,7 +12,7 @@ const {
   deleteIncome,
   getIncomesCategory,
 } = require('../controllers/income');
-const { addGoal } = require('../controllers/goal');
+const { addGoal, getGoals } = require('../controllers/goal');
 
 const router = require('express').Router();
 
@@ -31,6 +31,7 @@ router
   .delete('/delete-expense/:id', deleteExpense)
 
   // goal
-  .post('/add-goal', addGoal);
+  .post('/add-goal', addGoal)
+  .get('/get-goals', getGoals);
 
 module.exports = router;

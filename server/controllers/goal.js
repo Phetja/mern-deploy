@@ -23,3 +23,12 @@ exports.addGoal = async (req, res) => {
   }
   console.log(goal);
 };
+
+exports.getGoals = async (req, res) => {
+  try {
+    const goals = await GoalSchema.find().sort({ createedAt: -1 });
+    res.status(200).json(goals);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};

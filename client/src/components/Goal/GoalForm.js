@@ -31,7 +31,7 @@ function GoalForm() {
     <form onSubmit={handleSubmit}>
       <Input
         name="plan"
-        placeholder="Expense Name"
+        placeholder="Goal"
         value={plan}
         size="large"
         required

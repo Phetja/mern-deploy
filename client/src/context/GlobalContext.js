@@ -16,7 +16,7 @@ export const GlobalProvider = ({ children }) => {
   const [totalLoad, setTotalLoad] = useState(false);
   const [insertStatus, setInsertStatus] = useState(true);
   const [deleteStatus, setDeleteStatus] = useState(true);
-  const [goal, setGoal] = useState([]);
+  const [goals, setGoals] = useState([]);
   const maxDate = moment(new Date(), 'DD-MM-YYYY').format('L');
 
   //calculate income
@@ -46,6 +46,16 @@ export const GlobalProvider = ({ children }) => {
     } catch (error) {
     } finally {
       // setInsertStatus(true);
+    }
+  };
+
+  const getGoals = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}get-goals`);
+      setGoals(response.data);
+      console.log(response.data);
+    } catch (error) {
+    } finally {
     }
   };
 
@@ -271,6 +281,7 @@ export const GlobalProvider = ({ children }) => {
         deleteStatus,
         totalLoad,
         addGoal,
+        getGoals,
       }}
     >
       {children}
