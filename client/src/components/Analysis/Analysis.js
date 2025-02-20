@@ -7,6 +7,7 @@ import ItemCategory from '../ItemCategory/ItemCategory';
 import { numFormat } from '../../utils/numFormat';
 import { coin } from '../../utils/icons';
 import Loading2 from '../Loading/Loading2';
+import Chart from '../Chart/Chart';
 
 function Analysis() {
   const { expenseAnlaysis, totalExpenseAnalysis, loading } = useGlobalContext();

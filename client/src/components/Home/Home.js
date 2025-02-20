@@ -78,21 +78,9 @@ function Home() {
                   <div className="item">
                     <div className="today">Today</div>
                     <div className="incomes">
-                      {history.map((income) => {
-                        const { _id, title, amount, date, category, type } =
-                          income;
-                        return (
-                          <HistoryHomeItem
-                            key={_id}
-                            id={_id}
-                            title={title}
-                            amount={amount}
-                            date={date}
-                            type={type}
-                            category={category}
-                            indicatorColor="var(--color-green)"
-                          />
-                        );
+                      {history.map((goal) => {
+                        const { _id, plan } = goal;
+                        return <div key={_id} id={_id} title={plan} />;
                       })}
                     </div>
                   </div>

@@ -10,7 +10,7 @@ import AddIncome from './components/Income/AddIncome';
 import Analysis from './components/Analysis/Analysis';
 import Transfer from './components/Transfer/Transfer';
 import Categoty from './components/Category/Categoty';
-import Goal from './components/Goal/Goal';
+import HomePage from './Pages/็HomePage';
 function App() {
   const [active, setActive] = useState(1);
   const global = useGlobalContext();
@@ -19,13 +19,15 @@ function App() {
   const displayData = () => {
     switch (active) {
       case 1:
-        return <Home />;
+        // return <Home />;
+        return <HomePage />;
       case 2:
         return <Analysis />;
       case 3:
         return <Transfer />;
       case 4:
-        return <Goal />;
+        return <Transfer />;
+
       case 5:
         return <Transfer />;
       default:

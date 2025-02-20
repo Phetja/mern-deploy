@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 const BASE_URL = 'https://mern-deploy-backend-9ewg.onrender.com/api/v1/';
@@ -12,14 +12,39 @@ export const GlobalProvider = ({ children }) => {
   const [expenseAnlaysis, setExpenseAnlaysis] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [totalLoad, setTotalLoad] = useState(false);
+
   const [insertStatus, setInsertStatus] = useState(true);
   const [deleteStatus, setDeleteStatus] = useState(true);
-  const [goals, setGoals] = useState([]);
-  const maxDate = moment(new Date(), 'DD-MM-YYYY').format('L');
+  // const maxDate = moment(new Date(), 'DD-MM-YYYY').format('L');
+  const [totalIncomes, setTotalIncomes] = useState(0);
+  const [totalExpenses, setTotalExpenses] = useState(0);
+  const [netTotal, setNetTotal] = useState(0);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  //calculate income
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await Promise.all([getIncomes(), getExpense()]); // Fetch all data concurrently
+        setDataLoaded(true); // Set dataLoaded to true after all fetches are complete
+      } catch (error) {
+        // Handle errors if necessary
+      }
+    };
+
+    fetchData(); // Call fetchData when the component mounts
+  }, []);
+
+  // --- Income ---
+  const getIncomes = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}get-incomes`);
+      setIncomes(response.data);
+      console.log(response.data);
+    } catch (error) {
+    } finally {
+    }
+  };
+
   const addIncome = async (income) => {
     try {
       setInsertStatus(false);
@@ -35,42 +60,6 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  const addGoal = async (income) => {
-    try {
-      // setInsertStatus(false);
-      const response = await axios
-        .post(`${BASE_URL}add-goal`, income)
-        .catch((err) => {
-          setError(err.response.data.message);
-        });
-    } catch (error) {
-    } finally {
-      // setInsertStatus(true);
-    }
-  };
-
-  const getGoals = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}get-goals`);
-      setGoals(response.data);
-      console.log(response.data);
-    } catch (error) {
-    } finally {
-    }
-  };
-
-  const getIncomes = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${BASE_URL}get-incomes`);
-      setIncomes(response.data);
-      console.log(response.data);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const deleteIncome = async (id) => {
     try {
       setDeleteStatus(false);
@@ -83,14 +72,19 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const totalIncome = () => {
-    let totalIncome = 0;
-    incomes.forEach((income) => {
-      totalIncome = totalIncome + income.amount;
-    });
-    return totalIncome;
+    return incomes.reduce((total, income) => total + income.amount, 0);
   };
+  // const totalIncome = () => {
+  //   let totalIncome = 0;
+  //   incomes.forEach((income) => {
+  //     totalIncome = totalIncome + income.amount;
+  //   });
+  //   return totalIncome;
+  // };
+  // Calculate total income
 
   //calculate expense
+
   const addExpense = async (income) => {
     try {
       setInsertStatus(false);
@@ -108,13 +102,11 @@ export const GlobalProvider = ({ children }) => {
 
   const getExpense = async () => {
     try {
-      setLoading(true);
       const response = await axios.get(`${BASE_URL}get-expense`);
       setExpenses(response.data);
       console.log(response.data);
     } catch (error) {
     } finally {
-      setLoading(false);
     }
   };
 
@@ -131,18 +123,6 @@ export const GlobalProvider = ({ children }) => {
     return totalExpense;
   };
 
-  //total
-  const totalBalance = () => {
-    let total;
-    try {
-      setTotalLoad(true);
-      total = totalIncome() - totalExpense();
-    } catch (error) {
-    } finally {
-      setTotalLoad(false);
-      return total;
-    }
-  };
   //total
   const totalBalanceToday = () => {
     let totalBalance = 0;
@@ -225,7 +205,6 @@ export const GlobalProvider = ({ children }) => {
 
   const getExpenseAnalysis = async (year) => {
     try {
-      setLoading(true);
       const response = await axios.get(
         `${BASE_URL}get-expenseAnalysis/${year}`
       );
@@ -233,7 +212,6 @@ export const GlobalProvider = ({ children }) => {
       console.log(response.data);
     } catch (error) {
     } finally {
-      setLoading(false);
     }
   };
   const totalExpenseAnalysis = () => {
@@ -244,44 +222,78 @@ export const GlobalProvider = ({ children }) => {
     return totalExpenseAnalysis;
   };
 
-  // console.log(transactionHistory());
+  // คำนวณ totalIncomes และ totalExpenses
+  useEffect(() => {
+    const incomeSum = incomes.reduce((acc, income) => acc + income.amount, 0);
+    setTotalIncomes(incomeSum);
+  }, [incomes]);
+
+  useEffect(() => {
+    const expenseSum = expenses.reduce(
+      (acc, expense) => acc + expense.amount,
+      0
+    );
+    setTotalExpenses(expenseSum);
+  }, [expenses]);
+
+  // คำนวณ netTotal เมื่อ totalIncomes หรือ totalExpenses เปลี่ยน
+  useEffect(() => {
+    setNetTotal(totalIncomes - totalExpenses);
+  }, [totalIncomes, totalExpenses]);
+
+  // ดึงข้อมูลเมื่อ component โหลด
+  useEffect(() => {
+    getIncomes();
+    getExpense();
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
-        addIncome,
-        getIncomes,
+        // Income-related methods and states
         incomes,
+        getIncomes,
+        addIncome,
         deleteIncome,
         totalIncome,
+        incomesToday,
+        getIncomesToday,
+        transactionIncome,
+        totalIncomeToday,
+
+        // Expense-related methods and states
         addExpense,
         getExpense,
         deleteExpense,
         expenses,
         totalExpense,
-        totalBalance,
-        transactionHistory,
-        transactionAllHistory,
-        error,
-        setError,
-        getIncomesToday,
-        incomesToday,
         getExpenseToday,
         expensesToday,
-        todayHistory,
-        transactionIncome,
         transactionExpens,
-        totalIncomeToday,
+        totalExpenseAnalysis,
+        getExpenseAnalysis,
+
+        // History-related methods and states
+        transactionHistory,
+        transactionAllHistory,
+        todayHistory,
+
+        // Error handling
+        error,
+        setError,
+
+        // Summary and calculations
         totalExpenseToday,
         totalBalanceToday,
         expenseAnlaysis,
-        getExpenseAnalysis,
-        totalExpenseAnalysis,
-        loading,
+        totalIncomes,
+        totalExpenses,
+        netTotal,
+
+        // Utility states
         insertStatus,
         deleteStatus,
-        totalLoad,
-        addGoal,
-        getGoals,
+        dataLoaded,
       }}
     >
       {children}

@@ -29,7 +29,7 @@ function Navigation({ active, setActive }) {
 
 const NavStyled = styled.nav`
   box-shadow: 0px 2px 5px grey;
-  width: 200px;
+  width: 240px;
   height: 100%;
   background: rgba(252, 246, 249, 0.78);
   border: 3px solid #ffffff;
