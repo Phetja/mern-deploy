@@ -5,12 +5,12 @@ import { useState } from 'react';
 import Expenses from './components/Expense/Expense';
 import Income from './components/Income/Income';
 import { useGlobalContext } from './context/GlobalContext';
-import Home from './components/Home/Home';
 import AddIncome from './components/Income/AddIncome';
 import Analysis from './components/Analysis/Analysis';
 import Transfer from './components/Transfer/Transfer';
 import Categoty from './components/Category/Categoty';
 import HomePage from './Pages/็HomePage';
+import DailyBudget from './Pages/DailyBudget';
 function App() {
   const [active, setActive] = useState(1);
   const global = useGlobalContext();
@@ -26,12 +26,12 @@ function App() {
       case 3:
         return <Transfer />;
       case 4:
-        return <Transfer />;
+        return <DailyBudget />;
 
       case 5:
         return <Transfer />;
       default:
-        return <Home />;
+        return <HomePage />;
     }
   };
   return (

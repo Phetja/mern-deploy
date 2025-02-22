@@ -44,7 +44,19 @@ export const GlobalProvider = ({ children }) => {
     } finally {
     }
   };
-
+  const addDailyBudget = async (income) => {
+    try {
+      setInsertStatus(false);
+      const response = await axios
+        .post(`${BASE_URL}add-dailyBudget`, income)
+        .catch((err) => {
+          setError(err.response.data.message);
+        });
+    } catch (error) {
+    } finally {
+      setInsertStatus(true);
+    }
+  };
   const addIncome = async (income) => {
     try {
       setInsertStatus(false);
@@ -74,17 +86,8 @@ export const GlobalProvider = ({ children }) => {
   const totalIncome = () => {
     return incomes.reduce((total, income) => total + income.amount, 0);
   };
-  // const totalIncome = () => {
-  //   let totalIncome = 0;
-  //   incomes.forEach((income) => {
-  //     totalIncome = totalIncome + income.amount;
-  //   });
-  //   return totalIncome;
-  // };
-  // Calculate total income
 
-  //calculate expense
-
+  // --- Expense ---
   const addExpense = async (income) => {
     try {
       setInsertStatus(false);
@@ -124,13 +127,33 @@ export const GlobalProvider = ({ children }) => {
   };
 
   //total
-  const totalBalanceToday = () => {
-    let totalBalance = 0;
-    totalBalance = totalIncomeToday() - totalExpenseToday();
-    return totalBalance;
-  };
 
   //today
+  const getTodayTotals = async () => {
+    try {
+      const maxDate = moment(new Date(), 'DD-MM-YYYY').format('YYYY-MM-DD');
+      const [incomeResponse, expenseResponse] = await Promise.all([
+        axios.get(`${BASE_URL}get-incomeToday/${maxDate}`),
+        axios.get(`${BASE_URL}get-expenseToday/${maxDate}`),
+      ]);
+
+      const totalIncome = incomeResponse.data.reduce(
+        (sum, income) => sum + income.amount,
+        0
+      );
+      const totalExpense = expenseResponse.data.reduce(
+        (sum, expense) => sum + expense.amount,
+        0
+      );
+
+      return { totalIncome, totalExpense };
+    } catch (error) {
+      console.error("Error fetching today's totals:", error);
+      // Handle the error, e.g., display an error message or return default values
+      return { totalIncome: 0, totalExpense: 0 };
+    }
+  };
+
   const getIncomesToday = async () => {
     const maxDate = moment(new Date(), 'DD-MM-YYYY').format('YYYY-MM-DD');
     const response = await axios.get(`${BASE_URL}get-incomeToday/${maxDate}`);
@@ -142,20 +165,6 @@ export const GlobalProvider = ({ children }) => {
     const response = await axios.get(`${BASE_URL}get-expenseToday/${maxDate}`);
     setExpensesToday(response.data);
     console.log(response.data);
-  };
-  const totalIncomeToday = () => {
-    let totalIncome = 0;
-    incomesToday.forEach((income) => {
-      totalIncome = totalIncome + income.amount;
-    });
-    return totalIncome;
-  };
-  const totalExpenseToday = () => {
-    let totalExpense = 0;
-    expensesToday.forEach((expense) => {
-      totalExpense = totalExpense + expense.amount;
-    });
-    return totalExpense;
   };
 
   //history
@@ -250,16 +259,17 @@ export const GlobalProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
+        getTodayTotals,
         // Income-related methods and states
         incomes,
         getIncomes,
         addIncome,
         deleteIncome,
         totalIncome,
+        addDailyBudget,
         incomesToday,
         getIncomesToday,
         transactionIncome,
-        totalIncomeToday,
 
         // Expense-related methods and states
         addExpense,
@@ -283,8 +293,6 @@ export const GlobalProvider = ({ children }) => {
         setError,
 
         // Summary and calculations
-        totalExpenseToday,
-        totalBalanceToday,
         expenseAnlaysis,
         totalIncomes,
         totalExpenses,

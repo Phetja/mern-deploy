@@ -8,6 +8,7 @@ import { numFormat } from '../utils/numFormat';
 import logo from '../img/asa2.png';
 import Loading from '../components/Loading/Loading';
 import Card from '../components/Card';
+import { useState } from 'react';
 
 function HomePage() {
   const {
@@ -17,18 +18,26 @@ function HomePage() {
     getIncomesToday,
     getExpenseToday,
     todayHistory,
-    totalExpenseToday,
     netTotal,
+    getTodayTotals,
   } = useGlobalContext();
   const [...history] = todayHistory();
-
-  // const balance = totalIncome() - totalExpense();
+  const [todayTotals, setTodayTotals] = useState({
+    totalIncome: 0,
+    totalExpense: 0,
+  });
 
   useEffect(() => {
     getIncomes();
     getExpense();
     getIncomesToday();
     getExpenseToday();
+    const fetchTotals = async () => {
+      const totals = await getTodayTotals();
+      setTodayTotals(totals);
+    };
+
+    fetchTotals();
   }, []);
 
   return (
@@ -54,7 +63,9 @@ function HomePage() {
                   <Col xs={24} md={24}>
                     <Card
                       title={'Total Today'}
-                      amount={numFormat(totalExpenseToday())}
+                      amount={numFormat(
+                        todayTotals.totalExpense - todayTotals.totalIncome
+                      )}
                     />
                   </Col>
                 </Row>
