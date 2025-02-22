@@ -53,7 +53,7 @@ function DailyBudget() {
 
                 {insertStatus ? (
                   <Button type="primary" htmlType="submit" size="large" block>
-                    Add Daily
+                    Add DailyBudget
                   </Button>
                 ) : (
                   <Button type="primary" size="large" loading block>
