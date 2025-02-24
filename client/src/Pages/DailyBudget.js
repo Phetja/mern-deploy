@@ -6,9 +6,9 @@ import { useGlobalContext } from '../context/GlobalContext';
 import { useState } from 'react';
 
 function DailyBudget() {
-  const { addDailyBudget, insertStatus } = useGlobalContext();
+  const { addBudget, insertStatus } = useGlobalContext();
   const [inputState, setInputState] = useState({
-    dailybudget: '',
+    dailybudget: 0,
   });
 
   const { dailybudget } = inputState;
@@ -18,9 +18,9 @@ function DailyBudget() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    addDailyBudget(inputState);
+    addBudget(inputState);
     setInputState({
-      dailybudget: '',
+      dailybudget: 0,
     });
   };
   return (

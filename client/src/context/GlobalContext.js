@@ -44,8 +44,9 @@ export const GlobalProvider = ({ children }) => {
     } finally {
     }
   };
-  const addDailyBudget = async (income) => {
+  const addBudget = async (income) => {
     try {
+      console.log(income);
       setInsertStatus(false);
       const response = await axios
         .post(`${BASE_URL}add-dailyBudget`, income)
@@ -275,7 +276,7 @@ export const GlobalProvider = ({ children }) => {
         addIncome,
         deleteIncome,
         totalIncome,
-        addDailyBudget,
+        addBudget,
         incomesToday,
         getIncomesToday,
         transactionIncome,

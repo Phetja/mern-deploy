@@ -2,27 +2,24 @@ const DailyBudgetSchema = require('../models/DailyBudgetModel');
 
 exports.addDailyBudget = async (req, res) => {
   const { dailybudget } = req.body;
-  const dailyBudget = DailyBudgetSchema({
-    dailybudget,
-  });
 
   try {
-    let data = await DailyBudgetSchema.findOne();
-    if (data) {
-      data.value = value;
-      await data.save();
-      return res.json({ message: 'อัปเดตข้อมูลสำเร็จ', data });
+    let dailyBudgets = await DailyBudgetSchema.findOne(); // ใช้ let เพื่อให้กำหนดค่าใหม่ได้
+
+    if (dailyBudgets) {
+      dailyBudgets.dailybudget = dailybudget; // แก้ไขค่าแทนการสร้างใหม่
+      await dailyBudgets.save();
+      return res.json({ message: 'อัปเดตข้อมูลสำเร็จ', dailyBudgets });
     } else {
-      data = new DailyBudgetSchema({ value });
-      await data.save();
-      return res.status(201).json({ message: 'เพิ่มข้อมูลสำเร็จ', data });
+      dailyBudgets = new DailyBudgetSchema({ dailybudget });
+      await dailyBudgets.save();
+      return res
+        .status(201)
+        .json({ message: 'เพิ่มข้อมูลสำเร็จ', dailyBudgets });
     }
-    // await dailyBudget.save();
-    // res.status(200).json({ message: 'DailyBudget Added' });
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
-  console.log(dailyBudget);
 };
 
 exports.getDailyBudget = async (req, res) => {
