@@ -57,6 +57,15 @@ export const GlobalProvider = ({ children }) => {
       setInsertStatus(true);
     }
   };
+  const getDailyBudget = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}get-dailyBudget`);
+      setIncomes(response.data);
+      console.log(response.data);
+    } catch (error) {
+    } finally {
+    }
+  };
   const addIncome = async (income) => {
     try {
       setInsertStatus(false);

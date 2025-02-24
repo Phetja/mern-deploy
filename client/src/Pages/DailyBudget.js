@@ -8,10 +8,10 @@ import { useState } from 'react';
 function DailyBudget() {
   const { addDailyBudget, insertStatus } = useGlobalContext();
   const [inputState, setInputState] = useState({
-    dailyBudget: '',
+    dailybudget: '',
   });
 
-  const { dailyBudget } = inputState;
+  const { dailybudget } = inputState;
 
   const handleInput = (name) => (e) => {
     setInputState({ ...inputState, [name]: e.target.value });
@@ -20,7 +20,7 @@ function DailyBudget() {
     e.preventDefault();
     addDailyBudget(inputState);
     setInputState({
-      dailyBudget: '',
+      dailybudget: '',
     });
   };
   return (
@@ -43,12 +43,12 @@ function DailyBudget() {
                 }}
               >
                 <Input
-                  name="dailyBudget"
-                  placeholder="dailyBudget"
+                  name="dailybudget"
+                  placeholder="dailybudget"
                   required
                   size="large"
-                  value={dailyBudget}
-                  onChange={handleInput('dailyBudget')}
+                  value={dailybudget}
+                  onChange={handleInput('dailybudget')}
                 />
 
                 {insertStatus ? (
