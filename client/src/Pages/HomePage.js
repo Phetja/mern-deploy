@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Col, Row } from 'antd';
+
 import { InnerLayout } from '../styles/Layouts';
 import { useGlobalContext } from '../context/GlobalContext';
-import styled from 'styled-components';
-import HistoryHomeItem from '../History/HistoryHomeItem';
-import { Col, Row } from 'antd';
 import { numFormat } from '../utils/numFormat';
-import logo from '../img/asa2.png';
+
+import HistoryHomeItem from '../History/HistoryHomeItem';
+import ExpenseCard from '../components/Card/ExpenseCard';
 import Loading from '../components/Loading/Loading';
-import Card from '../components/Card';
-import { useState } from 'react';
+
+import logo from '../img/asa2.png';
 
 function HomePage() {
   const {
@@ -20,6 +22,8 @@ function HomePage() {
     todayHistory,
     netTotal,
     getTodayTotals,
+    getDailyBudget,
+    daily,
   } = useGlobalContext();
   const [...history] = todayHistory();
   const [todayTotals, setTodayTotals] = useState({
@@ -32,6 +36,7 @@ function HomePage() {
     getExpense();
     getIncomesToday();
     getExpenseToday();
+    getDailyBudget();
     const fetchTotals = async () => {
       const totals = await getTodayTotals();
       setTodayTotals(totals);
@@ -39,6 +44,18 @@ function HomePage() {
 
     fetchTotals();
   }, []);
+  const budget = daily.dailybudget;
+  const spent = todayTotals.totalExpense - todayTotals.totalIncome;
+  const percentage = budget === 0 ? 0 : Math.round((spent / budget) * 100);
+  const todayTotal = todayTotals.totalExpense - todayTotals.totalIncome;
+
+  const getProgressStyles = (percentage) => {
+    if (percentage >= 100) return { bgColor: '#F44336', labelColor: 'white' };
+    if (percentage >= 75) return { bgColor: '#FF9800', labelColor: '#000000' };
+    if (percentage >= 50) return { bgColor: '#FFC107 ', labelColor: '#000000' };
+    return { bgColor: '#4CAF50', labelColor: '#000000' };
+  };
+  const { bgColor, labelColor } = getProgressStyles(percentage);
 
   return (
     <InnerLayout>
@@ -55,23 +72,42 @@ function HomePage() {
                       <h1>My Wallet</h1>
                       <img src={logo} className="logo" />
                     </div>
-                    <Card
+                    {/* <Card
                       title={'Total Balance'}
                       amount={numFormat(netTotal)}
-                    />
+                    /> */}
+                    <div style={{ marginBottom: '1rem' }}>
+                      <ExpenseCard
+                        title={'Total Balance'}
+                        amount={numFormat(netTotal)}
+                        percentage={''}
+                        bgColor="#F7F9FC" // พื้นหลังสีขาว
+                        progressColor={bgColor}
+                        labelColor={'#4A4A68'}
+                      />
+                    </div>
+                    <div>
+                      <ExpenseCard
+                        title={'Total Today'}
+                        amount={todayTotal}
+                        percentage={percentage}
+                        bgColor="#ffffff" // พื้นหลังสีขาว
+                        progressColor={bgColor}
+                        labelColor={labelColor}
+                      />
+                    </div>
                   </Col>
-                  <Col xs={24} md={24}>
+
+                  {/* <Col xs={24} md={24}>
                     <Card
                       title={'Total Today'}
-                      amount={numFormat(
-                        todayTotals.totalExpense - todayTotals.totalIncome
-                      )}
+                      amount={numFormat(todayTotal)}
                     />
-                  </Col>
+                  </Col> */}
                 </Row>
               </div>
             </Col>
-
+            ;
             <Col xs={24} md={12}>
               <div className="today-transactions">
                 {' '}

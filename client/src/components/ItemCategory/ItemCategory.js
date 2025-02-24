@@ -1,49 +1,49 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Flex, Progress } from 'antd';
+// import { Flex, Progress } from 'antd';
 
 import {
   baht,
-  bus,
-  circle,
-  coffee,
-  food,
-  medical,
-  mobile,
-  shopping,
-  store,
-  takeaway,
-  tv,
+  // bus,
+  // circle,
+  // coffee,
+  // food,
+  // medical,
+  // mobile,
+  // shopping,
+  // store,
+  // takeaway,
+  // tv,
 } from '../../utils/icons';
 import { numFormat } from '../../utils/numFormat';
 
 function ItemCategory({ id, sum, total }) {
-  const categoryIcon = () => {
-    switch (id) {
-      case 'coffee':
-        return coffee;
-      case 'food':
-        return food;
-      case 'health':
-        return medical;
-      case 'subscriptions':
-        return tv;
-      case 'takeaways':
-        return takeaway;
-      case 'shopping':
-        return shopping;
-      case 'travelling':
-        return bus;
-      case 'store':
-        return store;
-      case 'mobile':
-        return mobile;
-      case 'other':
-        return circle;
-      default:
-        return '';
-    }
-  };
+  // const categoryIcon = () => {
+  //   switch (id) {
+  //     case 'coffee':
+  //       return coffee;
+  //     case 'food':
+  //       return food;
+  //     case 'health':
+  //       return medical;
+  //     case 'subscriptions':
+  //       return tv;
+  //     case 'takeaways':
+  //       return takeaway;
+  //     case 'shopping':
+  //       return shopping;
+  //     case 'travelling':
+  //       return bus;
+  //     case 'store':
+  //       return store;
+  //     case 'mobile':
+  //       return mobile;
+  //     case 'other':
+  //       return circle;
+  //     default:
+  //       return '';
+  //   }
+  // };
   const expenseIconColor = () => {
     switch (id) {
       case 'food':

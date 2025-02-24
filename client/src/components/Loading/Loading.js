@@ -1,5 +1,5 @@
 import React from 'react';
-import { DNA, Oval, Blocks, Hearts } from 'react-loader-spinner';
+import { Hearts } from 'react-loader-spinner';
 import styled from 'styled-components';
 import logo from '../../img/asa.png';
 function Loading() {

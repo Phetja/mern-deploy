@@ -49,3 +49,7 @@ export const bus = <i class="fa-solid fa-bus-simple"></i>;
 export const right_left = <i class="fa-solid fa-right-left"></i>;
 export const circle_plus = <i class="fa-solid fa-circle-plus"></i>;
 export const border_all = <i class="fa-solid fa-border-all"></i>;
+export const sack_dollar = <i className="fa-solid fa-sack-dollar"></i>;
+export const bill_transfer = (
+  <i className="fa-solid fa-money-bill-transfer"></i>
+);

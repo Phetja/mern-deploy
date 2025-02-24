@@ -7,6 +7,7 @@ const GlobalContext = React.createContext();
 
 export const GlobalProvider = ({ children }) => {
   const [incomes, setIncomes] = useState([]);
+  const [daily, setDaily] = useState([]);
   const [incomesToday, setIncomesToday] = useState([]);
   const [expensesToday, setExpensesToday] = useState([]);
   const [expenseAnlaysis, setExpenseAnlaysis] = useState([]);
@@ -24,7 +25,7 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([getIncomes(), getExpense()]); // Fetch all data concurrently
+        await Promise.all([getIncomes(), getExpense(), getTodayTotals()]); // Fetch all data concurrently
         setDataLoaded(true); // Set dataLoaded to true after all fetches are complete
       } catch (error) {
         // Handle errors if necessary
@@ -44,15 +45,15 @@ export const GlobalProvider = ({ children }) => {
     } finally {
     }
   };
-  const addBudget = async (income) => {
+  const addDailyBudget = async (income) => {
     try {
-      console.log(income);
       setInsertStatus(false);
       const response = await axios
         .post(`${BASE_URL}add-dailyBudget`, income)
         .catch((err) => {
           setError(err.response.data.message);
         });
+      getDailyBudget();
     } catch (error) {
     } finally {
       setInsertStatus(true);
@@ -61,7 +62,7 @@ export const GlobalProvider = ({ children }) => {
   const getDailyBudget = async () => {
     try {
       const response = await axios.get(`${BASE_URL}get-dailyBudget`);
-      setIncomes(response.data);
+      setDaily(response.data);
       console.log(response.data);
     } catch (error) {
     } finally {
@@ -276,7 +277,7 @@ export const GlobalProvider = ({ children }) => {
         addIncome,
         deleteIncome,
         totalIncome,
-        addBudget,
+
         incomesToday,
         getIncomesToday,
         transactionIncome,
@@ -292,7 +293,10 @@ export const GlobalProvider = ({ children }) => {
         transactionExpens,
         totalExpenseAnalysis,
         getExpenseAnalysis,
-
+        // DailyBudget
+        daily,
+        getDailyBudget,
+        addDailyBudget,
         // History-related methods and states
         transactionHistory,
         transactionAllHistory,

@@ -2,14 +2,10 @@ import styled from 'styled-components';
 import { MainLayout } from './styles/Layouts';
 import Navigation from './components/Navigation/Navigation';
 import { useState } from 'react';
-import Expenses from './components/Expense/Expense';
-import Income from './components/Income/Income';
 import { useGlobalContext } from './context/GlobalContext';
-import AddIncome from './components/Income/AddIncome';
 import Analysis from './components/Analysis/Analysis';
 import Transfer from './components/Transfer/Transfer';
-import Categoty from './components/Category/Categoty';
-import HomePage from './Pages/็HomePage';
+import HomePage from './Pages/HomePage';
 import DailyBudget from './Pages/DailyBudget';
 function App() {
   const [active, setActive] = useState(1);
