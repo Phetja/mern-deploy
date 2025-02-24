@@ -7,14 +7,14 @@ exports.addDailyBudget = async (req, res) => {
   });
 
   try {
-    await dailyBudget.findOne();
-    if (dailybudget) {
-      dailybudget.value = value;
-      await dailybudget.save();
-      return res.json({ message: 'อัปเดตข้อมูลสำเร็จ', dailybudget });
+    let data = await DailyBudgetSchema.findOne();
+    if (data) {
+      data.value = value;
+      await data.save();
+      return res.json({ message: 'อัปเดตข้อมูลสำเร็จ', data });
     } else {
-      dailybudget = new dailyBudget({ value });
-      await dailyBudget.save();
+      data = new DailyBudgetSchema({ value });
+      await data.save();
       return res.status(201).json({ message: 'เพิ่มข้อมูลสำเร็จ', data });
     }
     // await dailyBudget.save();
