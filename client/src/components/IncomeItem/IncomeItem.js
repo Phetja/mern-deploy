@@ -2,15 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { dateFormat } from '../../utils/dateFormat';
 import { DeleteOutlined } from '@ant-design/icons';
-import { useGlobalContext } from '../../context/GlobalContext';
 
 import {
   baht,
   bank,
   beer,
   bus,
-  car,
-  card,
   clothing,
   coffee,
   coin,

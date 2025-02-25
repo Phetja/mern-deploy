@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { InnerLayout } from '../styles/Layouts';
 import { Button, Col, Input, Row, Space, Modal } from 'antd';
 import { useGlobalContext } from '../context/GlobalContext';
-import NumberPad from '../components/์ีNumpad/Numpad';
+import NumberPad from '../components/Numpad/Numpad';
 import ExpenseCard from '../components/Card/ExpenseCard';
 import { numFormat } from '../utils/numFormat';
 import Loading from '../components/Loading/Loading';
@@ -12,7 +12,10 @@ function DailyBudget() {
     useGlobalContext();
 
   // State สำหรับค่าที่จะส่งไปยัง MongoDB
-  const [inputState, setInputState] = useState({ dailybudget: '' });
+  const [inputState, setInputState] = useState({
+    dailybudget: '',
+    monthlybudget: '',
+  });
 
   // State สำหรับแสดง/ซ่อนแป้นตัวเลข
   const [showPad, setShowPad] = useState(false);
@@ -87,7 +90,7 @@ function DailyBudget() {
       cancelText: 'ยกเลิก',
       onOk: () => {
         addDailyBudget(inputState);
-        setInputState({ dailybudget: '' });
+        setInputState({ dailybudget: '', monthlybudget: '' });
       },
     });
   };
@@ -121,6 +124,17 @@ function DailyBudget() {
                   bgColor="#F7F9FC" // พื้นหลังสีขาว
                   labelColor={'#4A4A68'}
                 />
+                <ExpenseCard
+                  title={'งบประมาณที่ตั้งไว้ล่าสุด'}
+                  amount={
+                    isNaN(daily.dailybudget)
+                      ? 'Loading...'
+                      : numFormat(daily.monthlybudget)
+                  }
+                  percentage={''}
+                  bgColor="#F7F9FC" // พื้นหลังสีขาว
+                  labelColor={'#4A4A68'}
+                />
               </div>
             </Col>
           </Row>
@@ -137,6 +151,12 @@ function DailyBudget() {
                     size="large"
                     value={inputState.dailybudget}
                     inputMode={isMobile ? 'none' : 'numeric'} // ปิดคีย์บอร์ดมือถือเมื่อใช้ Numpad
+                  />
+
+                  <Input
+                    placeholder="Enter daily budget"
+                    size="large"
+                    value={inputState.monthlybudget}
                   />
 
                   {/* แสดงแป้นตัวเลข */}

@@ -1,13 +1,14 @@
 const DailyBudgetSchema = require('../models/DailyBudgetModel');
 
 exports.addDailyBudget = async (req, res) => {
-  const { dailybudget } = req.body;
+  const { dailybudget, monthlybudget } = req.body;
 
   try {
     let dailyBudgets = await DailyBudgetSchema.findOne(); // ใช้ let เพื่อให้กำหนดค่าใหม่ได้
 
-    if (dailyBudgets) {
+    if (dailyBudgets || monthlybudget) {
       dailyBudgets.dailybudget = dailybudget; // แก้ไขค่าแทนการสร้างใหม่
+      dailyBudgets.monthlybudget = monthlybudget; // แก้ไขค่าแทนการสร้างใหม่
       await dailyBudgets.save();
       return res.json({ message: 'อัปเดตข้อมูลสำเร็จ', dailyBudgets });
     } else {

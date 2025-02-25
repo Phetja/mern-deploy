@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Row, Col, Button, Input, Space } from 'antd';
+import React from 'react';
+import { Row, Col, Button } from 'antd';
 import styled from 'styled-components';
 const NumberPad = ({ handleAddNumber, handleDelete, setShowPad }) => {
   return (

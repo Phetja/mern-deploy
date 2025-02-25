@@ -1,69 +1,62 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Input, Select, DatePicker, Button, Space } from 'antd';
 import { useGlobalContext } from '../../context/GlobalContext';
 import dayjs from 'dayjs';
-import NumberPad from '../์ีNumpad/Numpad';
+import NumberPad from '../Numpad/Numpad';
 
 function IncomeForm() {
   const { addIncome, insertStatus } = useGlobalContext();
+  const now = dayjs().format('YYYY-MM-DD');
+
   const [inputState, setInputState] = useState({
-    category: '',
-    amount: '',
-    date: '',
     title: '',
+    amount: '',
+    date: now,
+    category: '',
   });
 
-  const now = dayjs().format('YYYY-MM-DD');
-  const { title, amount, category } = inputState;
-  // State สำหรับแสดง/ซ่อนแป้นตัวเลข
   const [showPad, setShowPad] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const amountInputRef = useRef(null);
 
-  const handleInput = (name) => (e) => {
-    setInputState({ ...inputState, [name]: e.target.value });
+  const handleInputChange = (name) => (e) =>
+    setInputState((prev) => ({ ...prev, [name]: e.target.value }));
+
+  const handleAmountChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setInputState((prev) => ({ ...prev, amount: value }));
+    }
   };
+
+  const handleDateChange = (date) =>
+    setInputState((prev) => ({ ...prev, date: date.format('YYYY-MM-DD') }));
+
+  const handleAddNumber = (num) =>
+    setInputState((prev) => ({ ...prev, amount: prev.amount + num }));
+
+  const handleDelete = () =>
+    setInputState((prev) => ({ ...prev, amount: prev.amount.slice(0, -1) }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
     addIncome(inputState);
-    setInputState({
-      title: '',
-      amount: '',
-      date: '',
-      category: '',
-    });
+    setInputState({ title: '', amount: '', date: now, category: '' });
   };
 
-  const handleDatePicker = (date, dateString) => {
-    const data = date.format('YYYY-MM-DD');
-    setInputState({ ...inputState, date: data });
-  };
-  // อัปเดตค่าของ inputState
-  const handleAddNumber = (num) => {
-    setInputState((prev) => ({
-      ...prev,
-      amount: prev.amount + num,
-    }));
-  };
-  const handleChange = (e) => {
-    const value = e.target.value;
-    // อนุญาตเฉพาะตัวเลข
-    if (/^\d*$/.test(value)) {
-      setInputState({ amount: value });
-    }
-  };
-  // ลบตัวเลขทีละตัว
-  const handleDelete = () => {
-    setInputState((prev) => ({
-      ...prev,
-      amount: prev.amount.slice(0, -1),
-    }));
-  };
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         showPad &&
-        !event.target.closest('.number-pad, .number-pad-btn, input')
+        amountInputRef.current?.input &&
+        !amountInputRef.current.input.contains(event.target) &&
+        !event.target.closest('.number-pad, .number-pad-btn')
       ) {
         setShowPad(false);
       }
@@ -72,80 +65,55 @@ function IncomeForm() {
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, [showPad]);
-  useEffect(() => {
-    setInputState({ ...inputState, date: now });
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+
+  const categoryOptions = [
+    { value: 'salary', label: 'Salary' },
+    { value: 'bank', label: 'Bank Transfer' },
+    { value: 'other', label: 'Other' },
+  ];
 
   return (
     <form onSubmit={handleSubmit}>
-      <Space
-        direction="vertical"
-        style={{
-          display: 'flex',
-        }}
-      >
+      <Space direction="vertical" style={{ display: 'flex' }}>
         <Select
           size="large"
-          defaultValue="Select Option"
-          placeholder="Select Option"
-          style={{
-            width: '100%',
-          }}
-          name="category"
-          value={category}
-          onChange={(category) => {
-            setInputState({ ...inputState, category: category });
-          }}
-          options={[
-            {
-              value: 'salary',
-              label: 'Salary',
-            },
-            {
-              value: 'bank',
-              label: 'Bank Transfer',
-            },
-            {
-              value: 'other',
-              label: 'Other',
-            },
-          ]}
+          value={inputState.category}
+          onChange={(value) =>
+            setInputState((prev) => ({ ...prev, category: value }))
+          }
+          options={categoryOptions}
+          placeholder="Select Category"
+          style={{ width: '100%' }}
         />
 
         <Input
-          onFocus={() => isMobile && setShowPad(true)}
-          onChange={handleChange} // ให้พิมพ์ตัวเลขได้
+          ref={amountInputRef}
+          size="large"
           name="amount"
           placeholder="Amount"
-          inputMode={isMobile ? 'none' : 'numeric'} // ปิดคีย์บอร์ดมือถือเมื่อใช้ Numpad
-          // required
-          size="large"
-          value={amount}
-          // onChange={handleInput('amount')}
+          value={inputState.amount}
+          inputMode={isMobile ? 'none' : 'numeric'}
+          onFocus={() => isMobile && setShowPad(true)}
+          onChange={handleAmountChange}
         />
 
         <Input
+          size="large"
           name="title"
           placeholder="Income Name"
-          value={title}
-          size="large"
+          value={inputState.title}
           required
-          onChange={handleInput('title')}
+          onChange={handleInputChange('title')}
         />
 
         <DatePicker
+          size="large"
+          format="DD/MM/YYYY"
           defaultValue={dayjs(now, 'YYYY/MM/DD')}
           style={{ width: '100%' }}
-          format={'DD/MM/YYYY'}
-          size="large"
-          onChange={handleDatePicker}
+          onChange={handleDateChange}
         />
-        {/* แสดงแป้นตัวเลข */}
+
         {showPad && isMobile && (
           <NumberPad
             handleAddNumber={handleAddNumber}
@@ -153,15 +121,16 @@ function IncomeForm() {
             setShowPad={setShowPad}
           />
         )}
-        {insertStatus ? (
-          <Button type="primary" htmlType="submit" size="large" block>
-            Add Income
-          </Button>
-        ) : (
-          <Button type="primary" size="large" loading block>
-            Loading
-          </Button>
-        )}
+
+        <Button
+          type="primary"
+          htmlType="submit"
+          size="large"
+          block
+          loading={!insertStatus}
+        >
+          {insertStatus ? 'Add Income' : 'Loading'}
+        </Button>
       </Space>
     </form>
   );
