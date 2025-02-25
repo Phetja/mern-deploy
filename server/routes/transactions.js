@@ -4,6 +4,7 @@ const {
   deleteExpense,
   getExpenseToday,
   getExpenseAnalysis,
+  getExpenseMonth,
 } = require('../controllers/expense');
 const {
   addIncome,
@@ -11,6 +12,7 @@ const {
   getIncomeToday,
   deleteIncome,
   getIncomesCategory,
+  getIncomeMonth,
 } = require('../controllers/income');
 const {
   getDailyBudget,
@@ -25,14 +27,14 @@ router
   .get('/get-incomes', getIncomes)
   .get('/get-incomesCategory', getIncomesCategory)
   .get('/get-incomeToday/:date', getIncomeToday)
-  .get('/get-incomeMonth/:date', getIncomeMonth)
+  .get('/get-incomeMonth/:startOfMonth/:endOfMonth', getIncomeMonth)
   .delete('/delete-income/:id', deleteIncome)
   // expense
   .post('/add-expense', addExpense)
   .get('/get-expense', getExpense)
   .get('/get-expenseAnalysis/:year', getExpenseAnalysis)
   .get('/get-expenseToday/:date', getExpenseToday)
-  .get('/get-expenseMonth/:date', getExpenseMonth)
+  .get('/get-expenseMonth/:startOfMonth/:endOfMonth', getExpenseMonth)
   .delete('/delete-expense/:id', deleteExpense)
 
   // goal
