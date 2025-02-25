@@ -77,7 +77,6 @@ function IncomeItem({
         return info;
     }
   };
-  const { deleteStatus } = useGlobalContext();
   console.log('type', type);
   const handleClick = (e) => {
     e.preventDefault();
@@ -115,8 +114,8 @@ const IncomeItemStyled = styled.div`
   background: #fafafa;
   box-shadow: 0px 0px 3px grey;
   border-radius: 10px;
-  margin:0.1rem;
   padding: 1rem;
+  margin:0.1rem;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;

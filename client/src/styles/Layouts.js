@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const MainLayout = styled.div`
   padding: 1rem;
   height: 100%;
+  width: 100%;
   display: flex;
   gap: 1rem;
   @media screen and (max-width: 750px) {

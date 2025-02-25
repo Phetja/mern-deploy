@@ -6,23 +6,33 @@ const BASE_URL = 'https://mern-deploy-backend-9ewg.onrender.com/api/v1/';
 const GlobalContext = React.createContext();
 
 export const GlobalProvider = ({ children }) => {
+  // 🔹 จัดเก็บข้อมูลรายรับ-รายจ่าย
   const [incomes, setIncomes] = useState([]);
+  const [expenses, setExpenses] = useState([]);
   const [daily, setDaily] = useState([]);
+
+  // 🔹 ข้อมูลเฉพาะของวันนี้
   const [incomesToday, setIncomesToday] = useState([]);
   const [expensesToday, setExpensesToday] = useState([]);
-  const [expenseAnlaysis, setExpenseAnlaysis] = useState([]);
-  const [expenses, setExpenses] = useState([]);
-  const [error, setError] = useState(null);
 
-  const [insertStatus, setInsertStatus] = useState(true);
-  const [deleteStatus, setDeleteStatus] = useState(true);
-  // const maxDate = moment(new Date(), 'DD-MM-YYYY').format('L');
+  // 🔹 การวิเคราะห์รายจ่าย
+  const [expenseAnalysis, setExpenseAnalysis] = useState([]);
+
+  // 🔹 ค่ารวมของรายรับ-รายจ่าย
   const [totalIncomes, setTotalIncomes] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [netTotal, setNetTotal] = useState(0);
-  const [dataLoaded, setDataLoaded] = useState(false);
+
+  // 🔹 สถานะการโหลด
   const [loading, setLoading] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false); // เพิ่ม state โหลด
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  // 🔹 สถานะการทำงาน (Insert/Delete)
+  const [insertStatus, setInsertStatus] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false); // สถานะขณะลบข้อมูล
+
+  // 🔹 จัดเก็บ Error
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,11 +60,9 @@ export const GlobalProvider = ({ children }) => {
   const addDailyBudget = async (income) => {
     try {
       setInsertStatus(false);
-      const response = await axios
-        .post(`${BASE_URL}add-dailyBudget`, income)
-        .catch((err) => {
-          setError(err.response.data.message);
-        });
+      await axios.post(`${BASE_URL}add-dailyBudget`, income).catch((err) => {
+        setError(err.response.data.message);
+      });
       getDailyBudget();
     } catch (error) {
     } finally {
@@ -73,11 +81,9 @@ export const GlobalProvider = ({ children }) => {
   const addIncome = async (income) => {
     try {
       setInsertStatus(false);
-      const response = await axios
-        .post(`${BASE_URL}add-income`, income)
-        .catch((err) => {
-          setError(err.response.data.message);
-        });
+      await axios.post(`${BASE_URL}add-income`, income).catch((err) => {
+        setError(err.response.data.message);
+      });
       getIncomes();
     } catch (error) {
     } finally {
@@ -105,11 +111,9 @@ export const GlobalProvider = ({ children }) => {
   const addExpense = async (income) => {
     try {
       setInsertStatus(false);
-      const response = await axios
-        .post(`${BASE_URL}add-expense`, income)
-        .catch((err) => {
-          setError(err.response.data.message);
-        });
+      await axios.post(`${BASE_URL}add-expense`, income).catch((err) => {
+        setError(err.response.data.message);
+      });
       getExpense();
     } catch (error) {
     } finally {
@@ -239,7 +243,7 @@ export const GlobalProvider = ({ children }) => {
       const response = await axios.get(
         `${BASE_URL}get-expenseAnalysis/${year}`
       );
-      setExpenseAnlaysis(response.data);
+      setExpenseAnalysis(response.data);
     } catch (error) {
       console.error('Error fetching expense analysis:', error);
     } finally {
@@ -248,7 +252,7 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const totalExpenseAnalysis = () => {
-    return expenseAnlaysis.reduce((total, expense) => total + expense.sum, 0);
+    return expenseAnalysis.reduce((total, expense) => total + expense.sum, 0);
   };
 
   // คำนวณ totalIncomes และ totalExpenses
@@ -279,52 +283,60 @@ export const GlobalProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
+        // 🔹 สรุปข้อมูลทั้งหมด
         getTodayTotals,
-        // Income-related methods and states
+
+        // 🔹 ข้อมูลรายรับ (Income)
         incomes,
         getIncomes,
         addIncome,
         deleteIncome,
         totalIncome,
 
+        // 🔹 ข้อมูลรายรับของวันนี้
         incomesToday,
         getIncomesToday,
         transactionIncome,
 
-        // Expense-related methods and states
+        // 🔹 ข้อมูลรายจ่าย (Expense)
+        expenses,
         addExpense,
         getExpense,
         deleteExpense,
-        expenses,
         totalExpense,
-        getExpenseToday,
+
+        // 🔹 ข้อมูลรายจ่ายของวันนี้
         expensesToday,
+        getExpenseToday,
         transactionExpens,
+
+        // 🔹 การวิเคราะห์รายจ่าย
+        expenseAnalysis,
         totalExpenseAnalysis,
         getExpenseAnalysis,
-        // DailyBudget
+
+        // 🔹 งบประมาณรายวัน (Daily Budget)
         daily,
         getDailyBudget,
         addDailyBudget,
-        // History-related methods and states
+
+        // 🔹 ประวัติการทำธุรกรรม (Transaction History)
         transactionHistory,
         transactionAllHistory,
         todayHistory,
-        isDeleting,
 
-        // Error handling
+        // 🔹 การจัดการข้อผิดพลาด (Error Handling)
         error,
         setError,
 
-        // Summary and calculations
-        expenseAnlaysis,
+        // 🔹 ค่ารวมทางการเงิน
         totalIncomes,
         totalExpenses,
         netTotal,
 
-        // Utility states
+        // 🔹 สถานะของ UI และระบบ
+        isDeleting,
         insertStatus,
-        deleteStatus,
         dataLoaded,
         loading,
       }}

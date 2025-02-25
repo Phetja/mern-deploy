@@ -102,7 +102,8 @@ const ItemCategoryStyled = styled.div`
   box-shadow: 0px 0px 3px grey;
   border-radius: 10px;
   padding: 1rem;
-  margin-bottom: 1rem;
+  margin:0.1rem;
+  margin-bottom: 0.5rem;  
   display: flex;
   align-items: center;
   gap: 1rem;

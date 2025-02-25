@@ -9,7 +9,7 @@ import { coin } from '../../utils/icons';
 import LoadingScreen from '../Loading/LoadingScreen';
 
 function Analysis() {
-  const { expenseAnlaysis, totalExpenseAnalysis, loading } = useGlobalContext();
+  const { expenseAnalysis, totalExpenseAnalysis, loading } = useGlobalContext();
   return (
     <InnerLayout>
       <Row gutter={[16, 16]}>
@@ -51,7 +51,7 @@ function Analysis() {
               <LoadingScreen />
             ) : (
               <div className="incomes">
-                {expenseAnlaysis.map((income) => {
+                {expenseAnalysis.map((income) => {
                   const { _id, sum } = income;
                   return (
                     <ItemCategory
