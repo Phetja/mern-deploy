@@ -37,12 +37,7 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([
-          getIncomes(),
-          getExpense(),
-          getTodayTotals(),
-          getMonthlyTotals(),
-        ]); // Fetch all data concurrently
+        await Promise.all([getIncomes(), getExpense(), getTodayTotals()]); // Fetch all data concurrently
         setDataLoaded(true); // Set dataLoaded to true after all fetches are complete
       } catch (error) {
         // Handle errors if necessary
@@ -180,32 +175,6 @@ export const GlobalProvider = ({ children }) => {
     } catch (error) {
       console.error("Error fetching today's totals:", error);
       // Handle the error, e.g., display an error message or return default values
-      return { totalIncome: 0, totalExpense: 0 };
-    }
-  };
-
-  const getMonthlyTotals = async () => {
-    try {
-      const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
-      const endOfMonth = moment().endOf('month').format('YYYY-MM-DD');
-
-      const [incomeResponse, expenseResponse] = await Promise.all([
-        axios.get(`${BASE_URL}get-incomeMonth/${startOfMonth}/${endOfMonth}`),
-        axios.get(`${BASE_URL}get-expenseMonth/${startOfMonth}/${endOfMonth}`),
-      ]);
-
-      const totalIncome = incomeResponse.data.reduce(
-        (sum, income) => sum + income.amount,
-        0
-      );
-      const totalExpense = expenseResponse.data.reduce(
-        (sum, expense) => sum + expense.amount,
-        0
-      );
-
-      return { totalIncome, totalExpense };
-    } catch (error) {
-      console.error('Error fetching monthly totals:', error);
       return { totalIncome: 0, totalExpense: 0 };
     }
   };
@@ -350,8 +319,6 @@ export const GlobalProvider = ({ children }) => {
         daily,
         getDailyBudget,
         addDailyBudget,
-        // 🔹 งบประมาณรายเดือน (Daily Budget)
-        getMonthlyTotals,
 
         // 🔹 ประวัติการทำธุรกรรม (Transaction History)
         transactionHistory,
