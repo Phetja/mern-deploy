@@ -5,9 +5,10 @@ import { useGlobalContext } from '../context/GlobalContext';
 import NumberPad from '../components/์ีNumpad/Numpad';
 import ExpenseCard from '../components/Card/ExpenseCard';
 import { numFormat } from '../utils/numFormat';
+import Loading from '../components/Loading/Loading';
 
 function DailyBudget() {
-  const { addDailyBudget, getDailyBudget, daily, insertStatus } =
+  const { addDailyBudget, getDailyBudget, daily, insertStatus, dataLoaded } =
     useGlobalContext();
 
   // State สำหรับค่าที่จะส่งไปยัง MongoDB
@@ -101,57 +102,66 @@ function DailyBudget() {
 
   return (
     <InnerLayout>
-      <div>
-        <Row gutter={[8]}>
-          <Col xs={24} md={12} style={{ marginBottom: '1rem' }}>
-            <div>
-              <ExpenseCard
-                title={'งบประมาณที่ตั้งไว้ล่าสุด'}
-                amount={numFormat(daily.dailybudget)}
-                percentage={''}
-                bgColor="#F7F9FC" // พื้นหลังสีขาว
-                labelColor={'#4A4A68'}
-              />
-            </div>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs={24} md={12} style={{ marginBottom: '1rem' }}>
-            <form onSubmit={handleSubmit}>
-              <Space direction="vertical" style={{ display: 'flex' }}>
-                {/* Input */}
-                <Input
-                  onFocus={() => isMobile && setShowPad(true)}
-                  onChange={handleChange} // ให้พิมพ์ตัวเลขได้
-                  placeholder="Enter daily budget"
-                  size="large"
-                  value={inputState.dailybudget}
-                  inputMode={isMobile ? 'none' : 'numeric'} // ปิดคีย์บอร์ดมือถือเมื่อใช้ Numpad
+      {' '}
+      {!dataLoaded ? (
+        <Loading />
+      ) : (
+        <div>
+          <Row gutter={[8]}>
+            <Col xs={24} md={12} style={{ marginBottom: '1rem' }}>
+              <div>
+                <ExpenseCard
+                  title={'งบประมาณที่ตั้งไว้ล่าสุด'}
+                  amount={
+                    isNaN(daily.dailybudget)
+                      ? 'Loading...'
+                      : numFormat(daily.dailybudget)
+                  }
+                  percentage={''}
+                  bgColor="#F7F9FC" // พื้นหลังสีขาว
+                  labelColor={'#4A4A68'}
                 />
+              </div>
+            </Col>
+          </Row>
 
-                {/* แสดงแป้นตัวเลข */}
-                {showPad && isMobile && (
-                  <NumberPad
-                    handleAddNumber={handleAddNumber}
-                    handleDelete={handleDelete}
-                    setShowPad={setShowPad}
+          <Row>
+            <Col xs={24} md={12} style={{ marginBottom: '1rem' }}>
+              <form onSubmit={handleSubmit}>
+                <Space direction="vertical" style={{ display: 'flex' }}>
+                  {/* Input */}
+                  <Input
+                    onFocus={() => isMobile && setShowPad(true)}
+                    onChange={handleChange} // ให้พิมพ์ตัวเลขได้
+                    placeholder="Enter daily budget"
+                    size="large"
+                    value={inputState.dailybudget}
+                    inputMode={isMobile ? 'none' : 'numeric'} // ปิดคีย์บอร์ดมือถือเมื่อใช้ Numpad
                   />
-                )}
-                {insertStatus ? (
-                  <Button type="primary" htmlType="submit" size="large" block>
-                    Confirm Budget
-                  </Button>
-                ) : (
-                  <Button type="primary" size="large" loading block>
-                    Loading
-                  </Button>
-                )}
-              </Space>
-            </form>
-          </Col>
-        </Row>
-      </div>
+
+                  {/* แสดงแป้นตัวเลข */}
+                  {showPad && isMobile && (
+                    <NumberPad
+                      handleAddNumber={handleAddNumber}
+                      handleDelete={handleDelete}
+                      setShowPad={setShowPad}
+                    />
+                  )}
+                  {insertStatus ? (
+                    <Button type="primary" htmlType="submit" size="large" block>
+                      Confirm Budget
+                    </Button>
+                  ) : (
+                    <Button type="primary" size="large" loading block>
+                      Loading
+                    </Button>
+                  )}
+                </Space>
+              </form>
+            </Col>
+          </Row>
+        </div>
+      )}
     </InnerLayout>
   );
 }

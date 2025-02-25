@@ -6,7 +6,7 @@ import { useGlobalContext } from '../../context/GlobalContext';
 import ItemCategory from '../ItemCategory/ItemCategory';
 import { numFormat } from '../../utils/numFormat';
 import { coin } from '../../utils/icons';
-import Loading2 from '../Loading/Loading2';
+import LoadingScreen from '../Loading/LoadingScreen';
 
 function Analysis() {
   const { expenseAnlaysis, totalExpenseAnalysis, loading } = useGlobalContext();
@@ -48,7 +48,7 @@ function Analysis() {
               </div>
             </h3>
             {loading ? (
-              <Loading2 />
+              <LoadingScreen />
             ) : (
               <div className="incomes">
                 {expenseAnlaysis.map((income) => {

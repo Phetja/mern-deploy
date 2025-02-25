@@ -53,3 +53,5 @@ export const sack_dollar = <i className="fa-solid fa-sack-dollar"></i>;
 export const bill_transfer = (
   <i className="fa-solid fa-money-bill-transfer"></i>
 );
+export const chart_bar = <i class="fa-solid fa-chart-simple"></i>;
+export const chart_line = <i class="fa-solid fa-chart-line"></i>;

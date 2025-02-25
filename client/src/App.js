@@ -7,6 +7,7 @@ import Analysis from './components/Analysis/Analysis';
 import Transfer from './components/Transfer/Transfer';
 import HomePage from './Pages/HomePage';
 import DailyBudget from './Pages/DailyBudget';
+import Report from './Pages/Report';
 function App() {
   const [active, setActive] = useState(1);
   const global = useGlobalContext();
@@ -18,7 +19,8 @@ function App() {
         // return <Home />;
         return <HomePage />;
       case 2:
-        return <Analysis />;
+        // return <Analysis />;
+        return <Report />;
       case 3:
         return <Transfer />;
       case 4:

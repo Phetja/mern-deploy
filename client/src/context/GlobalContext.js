@@ -21,6 +21,8 @@ export const GlobalProvider = ({ children }) => {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [netTotal, setNetTotal] = useState(0);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false); // เพิ่ม state โหลด
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,12 +87,13 @@ export const GlobalProvider = ({ children }) => {
 
   const deleteIncome = async (id) => {
     try {
-      setDeleteStatus(false);
-      const res = await axios.delete(`${BASE_URL}delete-income/${id}`);
-      getIncomes();
+      setIsDeleting(true); // เริ่มโหลด
+      await axios.delete(`${BASE_URL}delete-income/${id}`);
+      await getIncomes(); // โหลดข้อมูลใหม่
     } catch (error) {
+      console.error('Error deleting income:', error);
     } finally {
-      setDeleteStatus(true);
+      setIsDeleting(false); // หยุดโหลด
     }
   };
 
@@ -125,8 +128,15 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const deleteExpense = async (id) => {
-    const res = await axios.delete(`${BASE_URL}delete-expense/${id}`);
-    getExpense();
+    try {
+      setIsDeleting(true); // เริ่มโหลด
+      await axios.delete(`${BASE_URL}delete-expense/${id}`);
+      getExpense();
+    } catch (error) {
+      console.error('Error deleting expense:', error);
+    } finally {
+      setIsDeleting(false); // หยุดโหลด
+    }
   };
 
   const totalExpense = () => {
@@ -225,21 +235,20 @@ export const GlobalProvider = ({ children }) => {
 
   const getExpenseAnalysis = async (year) => {
     try {
+      setLoading(true); // เริ่มโหลดข้อมูล
       const response = await axios.get(
         `${BASE_URL}get-expenseAnalysis/${year}`
       );
       setExpenseAnlaysis(response.data);
-      console.log(response.data);
     } catch (error) {
+      console.error('Error fetching expense analysis:', error);
     } finally {
+      setLoading(false); // โหลดเสร็จแล้ว
     }
   };
+
   const totalExpenseAnalysis = () => {
-    let totalExpenseAnalysis = 0;
-    expenseAnlaysis.forEach((expense) => {
-      totalExpenseAnalysis = totalExpenseAnalysis + expense.sum;
-    });
-    return totalExpenseAnalysis;
+    return expenseAnlaysis.reduce((total, expense) => total + expense.sum, 0);
   };
 
   // คำนวณ totalIncomes และ totalExpenses
@@ -301,6 +310,7 @@ export const GlobalProvider = ({ children }) => {
         transactionHistory,
         transactionAllHistory,
         todayHistory,
+        isDeleting,
 
         // Error handling
         error,
@@ -316,6 +326,7 @@ export const GlobalProvider = ({ children }) => {
         insertStatus,
         deleteStatus,
         dataLoaded,
+        loading,
       }}
     >
       {children}

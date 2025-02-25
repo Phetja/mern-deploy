@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'antd';
 
@@ -41,13 +41,17 @@ function HomePage() {
       const totals = await getTodayTotals();
       setTodayTotals(totals);
     };
-
-    fetchTotals();
-  }, []);
+    if (!todayTotals.totalExpense && !todayTotals.totalIncome) {
+      fetchTotals();
+    }
+  }, [todayTotals]);
   const budget = daily.dailybudget;
   const spent = todayTotals.totalExpense - todayTotals.totalIncome;
   const percentage = budget === 0 ? 0 : Math.round((spent / budget) * 100);
-  const todayTotal = todayTotals.totalExpense - todayTotals.totalIncome;
+  // const todayTotal = todayTotals.totalExpense - todayTotals.totalIncome;
+  const todayTotal = useMemo(() => {
+    return todayTotals.totalExpense - todayTotals.totalIncome;
+  }, [todayTotals]); // คำนวณใหม่เฉพาะเมื่อ todayTotals เปลี่ยน
 
   const getProgressStyles = (percentage) => {
     if (percentage >= 100) return { bgColor: '#F44336', labelColor: 'white' };
@@ -115,7 +119,7 @@ function HomePage() {
                   <Col xs={24} md={24}>
                     <div className="item">
                       <div className="today-title">Today</div>
-                      <div className="incomes">
+                      <div className="incomes scrollable-container">
                         {history.map((income) => {
                           const { _id, title, amount, date, category, type } =
                             income;
@@ -167,6 +171,12 @@ const HomeStyled = styled.nav`
       justify-content: center;
       align-item: center;
       font-size: 24px;
+    }
+    .scrollable-container {
+      max-height: 400px; /* ปรับขนาดสูงสุดตามต้องการ */
+      overflow-y: auto;  /* ให้สามารถเลื่อนแนวตั้ง */
+      overflow-x: hidden; /* ปิดการเลื่อนแนวนอน */
+      padding-right: 8px; /* ป้องกันแถบ Scroll ทับเนื้อหา */
     }
   }
 

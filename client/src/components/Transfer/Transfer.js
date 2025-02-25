@@ -1,12 +1,11 @@
 import React from 'react';
 import Toggle from '../Toggle/Toggle';
+import { useGlobalContext } from '../../context/GlobalContext';
+import Loading from '../Loading/Loading';
 
 const Transfer = () => {
-  return (
-    <div>
-      <Toggle />
-    </div>
-  );
+  const { dataLoaded } = useGlobalContext();
+  return <div>{!dataLoaded ? <Loading /> : <Toggle />}</div>;
 };
 
 export default Transfer;
