@@ -1,34 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { InnerLayout } from '../styles/Layouts';
-import { Button, Col, Input, Row, Space, Modal } from 'antd';
+import { Button, Col, Input, Row, Space, Modal, Card, Typography } from 'antd';
 import { useGlobalContext } from '../context/GlobalContext';
-import NumberPad from '../components/Numpad/Numpad';
 import ExpenseCard from '../components/Card/ExpenseCard';
 import { numFormat } from '../utils/numFormat';
 import Loading from '../components/Loading/Loading';
+import NumberPad from '../components/Numpad/Numpad';
+
+const { Title } = Typography;
 
 function DailyBudget() {
-  const { addDailyBudget, getDailyBudget, daily, insertStatus, dataLoaded } =
+  const { addDailyBudget, getDailyBudget, daily, dataLoaded } =
     useGlobalContext();
 
-  // State สำหรับค่าที่จะส่งไปยัง MongoDB
   const [inputState, setInputState] = useState({
     dailybudget: '',
     monthlybudget: '',
   });
-
-  // State สำหรับแสดง/ซ่อนแป้นตัวเลข
+  const [editMode, setEditMode] = useState(null);
   const [showPad, setShowPad] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  // ใช้ useEffect โหลดค่าปัจจุบันจาก DB
+
   useEffect(() => {
     getDailyBudget();
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    setInputState({
+      dailybudget: daily.dailybudget ? daily.dailybudget.toString() : '',
+      monthlybudget: daily.monthlybudget ? daily.monthlybudget.toString() : '',
+    });
+  }, [daily]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -43,144 +48,176 @@ function DailyBudget() {
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, [showPad]);
-  // อัปเดตค่าของ inputState
+
+  const handleEditClick = (type) => {
+    setEditMode(type);
+    setShowPad(isMobile);
+  };
+
   const handleAddNumber = (num) => {
-    setInputState((prev) => ({
-      ...prev,
-      dailybudget: prev.dailybudget + num,
-    }));
+    if (editMode) {
+      setInputState((prev) => ({
+        ...prev,
+        [editMode]: prev[editMode] + num,
+      }));
+    }
   };
 
-  // ลบตัวเลขทีละตัว
   const handleDelete = () => {
-    setInputState((prev) => ({
-      ...prev,
-      dailybudget: prev.dailybudget.slice(0, -1),
-    }));
+    if (editMode) {
+      setInputState((prev) => ({
+        ...prev,
+        [editMode]: prev[editMode].slice(0, -1),
+      }));
+    }
   };
 
-  // ส่งข้อมูลเมื่อกดปุ่มและ Modal
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const budgetValue = parseFloat(inputState.dailybudget);
+  const handleSubmit = () => {
+    if (!editMode) return;
+    const budgetValue = parseFloat(inputState[editMode]);
 
     if (!budgetValue) {
       Modal.warning({
         title: 'แจ้งเตือน',
-        content: 'กรุณากรอกค่า Daily Budget!',
+        content: `กรุณากรอกค่า ${
+          editMode === 'dailybudget' ? 'งบรายวัน' : 'งบรายเดือน'
+        }!`,
         okText: 'ตกลง',
       });
       return;
     }
 
-    if (budgetValue > 5000) {
+    if (editMode === 'dailybudget' && budgetValue > 5000) {
       Modal.error({
         title: 'แจ้งเตือน',
-        content: 'ค่าที่ใส่สูงเกิน 5,000! กรุณากรอกใหม่',
+        content: 'ค่าสูงเกิน 5,000! กรุณากรอกค่าใหม่',
         okText: 'ตกลง',
       });
       return;
     }
 
-    // ถ้าค่าถูกต้อง ให้เปิด Modal Confirm
+    if (editMode === 'monthlybudget' && budgetValue > 20000) {
+      Modal.error({
+        title: 'แจ้งเตือน',
+        content: 'ค่าสูงเกิน 20,000! กรุณากรอกค่าใหม่',
+        okText: 'ตกลง',
+      });
+      return;
+    }
+
     Modal.confirm({
-      title: 'ยืนยันการกำหนดงบ?',
-      content: `คุณต้องการเพิ่มงบต่อวันเป็น ${budgetValue} ใช่หรือไม่?`,
+      title: `ยืนยันการกำหนดงบ${
+        editMode === 'dailybudget' ? 'รายวัน' : 'รายเดือน'
+      }?`,
+      content: `คุณต้องการตั้งงบ${
+        editMode === 'dailybudget' ? 'รายวัน' : 'รายเดือน'
+      }เป็น ${budgetValue} ใช่หรือไม่?`,
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: () => {
-        addDailyBudget(inputState);
-        setInputState({ dailybudget: '', monthlybudget: '' });
+        const updatedBudget = {
+          dailybudget:
+            editMode === 'dailybudget' ? budgetValue : daily.dailybudget,
+          monthlybudget:
+            editMode === 'monthlybudget' ? budgetValue : daily.monthlybudget,
+        };
+        addDailyBudget(updatedBudget);
+        setEditMode(null);
+        setShowPad(false);
       },
     });
   };
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    // อนุญาตเฉพาะตัวเลข
-    if (/^\d*$/.test(value)) {
-      setInputState({ dailybudget: value });
-    }
-  };
-
   return (
     <InnerLayout>
-      {' '}
       {!dataLoaded ? (
         <Loading />
       ) : (
-        <div>
-          <Row gutter={[8]}>
-            <Col xs={24} md={12} style={{ marginBottom: '1rem' }}>
-              <div>
-                <ExpenseCard
-                  title={'งบประมาณที่ตั้งไว้ล่าสุด'}
-                  amount={
-                    isNaN(daily.dailybudget)
-                      ? 'Loading...'
-                      : numFormat(daily.dailybudget)
-                  }
-                  percentage={''}
-                  bgColor="#F7F9FC" // พื้นหลังสีขาว
-                  labelColor={'#4A4A68'}
-                />
-                <ExpenseCard
-                  title={'งบประมาณที่ตั้งไว้ล่าสุด'}
-                  amount={
-                    isNaN(daily.dailybudget)
-                      ? 'Loading...'
-                      : numFormat(daily.monthlybudget)
-                  }
-                  percentage={''}
-                  bgColor="#F7F9FC" // พื้นหลังสีขาว
-                  labelColor={'#4A4A68'}
-                />
-              </div>
+        <Card
+          style={{
+            maxWidth: 500,
+            margin: 'auto',
+            padding: '1.5rem',
+            textAlign: 'center',
+          }}
+        >
+          <Title level={3}>จัดการงบประมาณ</Title>
+          <Row gutter={[16, 16]}>
+            <Col span={24}>
+              <ExpenseCard
+                title={'งบประมาณรายวันล่าสุด'}
+                amount={numFormat(daily.dailybudget)}
+                bgColor="#F7F9FC"
+                labelColor={'#4A4A68'}
+              />
+            </Col>
+            <Col span={24}>
+              <ExpenseCard
+                title={'งบประมาณรายเดือนล่าสุด'}
+                amount={numFormat(daily.monthlybudget)}
+                bgColor="#F7F9FC"
+                labelColor={'#4A4A68'}
+              />
             </Col>
           </Row>
 
-          <Row>
-            <Col xs={24} md={12} style={{ marginBottom: '1rem' }}>
-              <form onSubmit={handleSubmit}>
-                <Space direction="vertical" style={{ display: 'flex' }}>
-                  {/* Input */}
-                  <Input
-                    onFocus={() => isMobile && setShowPad(true)}
-                    onChange={handleChange} // ให้พิมพ์ตัวเลขได้
-                    placeholder="Enter daily budget"
-                    size="large"
-                    value={inputState.dailybudget}
-                    inputMode={isMobile ? 'none' : 'numeric'} // ปิดคีย์บอร์ดมือถือเมื่อใช้ Numpad
-                  />
+          <Space
+            direction="vertical"
+            style={{ width: '100%', marginTop: '1rem' }}
+          >
+            <Button
+              type="dashed"
+              onClick={() => handleEditClick('dailybudget')}
+              block
+            >
+              แก้ไขงบรายวัน
+            </Button>
+            <Button
+              type="dashed"
+              onClick={() => handleEditClick('monthlybudget')}
+              block
+            >
+              แก้ไขงบรายเดือน
+            </Button>
 
-                  <Input
-                    placeholder="Enter daily budget"
-                    size="large"
-                    value={inputState.monthlybudget}
-                  />
+            {editMode && (
+              <>
+                <Input
+                  placeholder={`Enter ${
+                    editMode === 'dailybudget' ? 'daily' : 'monthly'
+                  } budget`}
+                  onFocus={() => isMobile && setShowPad(true)}
+                  inputMode={isMobile ? 'none' : 'numeric'}
+                  size="large"
+                  value={inputState[editMode]}
+                  onChange={(e) =>
+                    setInputState({ ...inputState, [editMode]: e.target.value })
+                  }
+                />
+              </>
+            )}
+          </Space>
 
-                  {/* แสดงแป้นตัวเลข */}
-                  {showPad && isMobile && (
-                    <NumberPad
-                      handleAddNumber={handleAddNumber}
-                      handleDelete={handleDelete}
-                      setShowPad={setShowPad}
-                    />
-                  )}
-                  {insertStatus ? (
-                    <Button type="primary" htmlType="submit" size="large" block>
-                      Confirm Budget
-                    </Button>
-                  ) : (
-                    <Button type="primary" size="large" loading block>
-                      Loading
-                    </Button>
-                  )}
-                </Space>
-              </form>
-            </Col>
-          </Row>
-        </div>
+          {showPad && isMobile && (
+            <NumberPad
+              handleAddNumber={handleAddNumber}
+              handleDelete={handleDelete}
+              setShowPad={setShowPad}
+            />
+          )}
+
+          {editMode && (
+            <Button
+              type="primary"
+              onClick={handleSubmit}
+              size="large"
+              block
+              style={{ marginTop: '1rem' }}
+            >
+              ยืนยัน
+            </Button>
+          )}
+        </Card>
       )}
     </InnerLayout>
   );

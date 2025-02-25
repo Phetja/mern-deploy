@@ -63,6 +63,18 @@ exports.getIncomeToday = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+exports.getIncomeMonth = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.params;
+    const incomes = await IncomeSchema.find({
+      date: { $gte: startDate, $lte: endDate }, // ค้นหารายรับที่อยู่ระหว่าง startDate - endDate
+    });
+
+    res.status(200).json(incomes);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error });
+  }
+};
 
 exports.deleteIncome = async (req, res) => {
   const { id } = req.params;

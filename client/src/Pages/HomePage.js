@@ -22,6 +22,7 @@ function HomePage() {
     todayHistory,
     netTotal,
     getTodayTotals,
+    getMonthlyTotals,
     getDailyBudget,
     daily,
   } = useGlobalContext();
@@ -30,6 +31,19 @@ function HomePage() {
     totalIncome: 0,
     totalExpense: 0,
   });
+  // State สำหรับเก็บยอดรวมของเดือนนี้
+  const [monthlyTotals, setMonthlyTotals] = useState({
+    totalIncome: 0,
+    totalExpense: 0,
+  });
+  // ดึงข้อมูลยอดรวมของเดือนปัจจุบัน
+  useEffect(() => {
+    const fetchMonthlyTotals = async () => {
+      const totals = await getMonthlyTotals();
+      setMonthlyTotals(totals);
+    };
+    fetchMonthlyTotals();
+  }, [monthlyTotals]);
 
   useEffect(() => {
     getIncomes();
@@ -75,6 +89,7 @@ function HomePage() {
                     <div className="title">
                       <h1>My Wallet</h1>
                       <img src={logo} className="logo" />
+                      <p> {monthlyTotals.totalExpense}</p>
                     </div>
                     {/* <Card
                       title={'Total Balance'}
@@ -111,7 +126,6 @@ function HomePage() {
                 </Row>
               </div>
             </Col>
-            ;
             <Col xs={24} md={12}>
               <div className="today-transactions">
                 {' '}

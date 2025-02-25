@@ -45,6 +45,18 @@ exports.getExpenseToday = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+exports.getExpenseMonth = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.params;
+    const expenses = await ExpenseSchema.find({
+      date: { $gte: startDate, $lte: endDate }, // ค้นหารายจ่ายที่อยู่ระหว่าง startDate - endDate
+    });
+
+    res.status(200).json(expenses);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error });
+  }
+};
 
 exports.deleteExpense = async (req, res) => {
   const { id } = req.params;
