@@ -25,14 +25,14 @@ router
   .get('/get-incomes', getIncomes)
   .get('/get-incomesCategory', getIncomesCategory)
   .get('/get-incomeToday/:date', getIncomeToday)
-  .get('/get-incomeMonth/:startOfMonth/:endOfMonth', getIncomeMonth)
+  .get('/get-incomeMonth/:date', getIncomeMonth)
   .delete('/delete-income/:id', deleteIncome)
   // expense
   .post('/add-expense', addExpense)
   .get('/get-expense', getExpense)
   .get('/get-expenseAnalysis/:year', getExpenseAnalysis)
   .get('/get-expenseToday/:date', getExpenseToday)
-  .get('/get-expenseMonth/:startOfMonth/:endOfMonth', getExpenseMonth)
+  .get('/get-expenseMonth/:date', getExpenseMonth)
   .delete('/delete-expense/:id', deleteExpense)
 
   // goal
