@@ -32,9 +32,19 @@ function HomePage() {
     totalIncome: 0,
     totalExpense: 0,
   });
-
+  const [monthTotal, setMonthTotal] = useState(0);
   // ดึงข้อมูลรายจ่ายเดือนปัจจุบัน
-  const monthTotal = totalExpenseAnalysis();
+  useEffect(() => {
+    const fetchMonthTotal = async () => {
+      const total = await totalExpenseAnalysis();
+      setMonthTotal(total);
+    };
+
+    fetchMonthTotal();
+
+    // ถ้าข้อมูลเกี่ยวกับรายจ่ายเปลี่ยน ให้ดึงใหม่
+  }, [totalExpenseAnalysis, getExpense]);
+  // const monthTotal = totalExpenseAnalysis();
 
   useEffect(() => {
     getIncomes();
